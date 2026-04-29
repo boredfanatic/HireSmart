@@ -1,4 +1,3 @@
-```markdown
 # HireSmart - Automated Skill-Based Recruitment Platform
 
 A web-based recruitment management system that automates candidate-job matching through CV parsing, keyword extraction, and weighted skill-based scoring algorithms.
@@ -96,4 +95,3 @@ HireSmart streamlines the recruitment process by automatically matching candidat
    http://localhost/HireSmart/
 
 **HireSmart** - Smart Hiring, Simplified 
-```
