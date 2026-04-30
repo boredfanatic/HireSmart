@@ -1,0 +1,4 @@
+data/uploads/*
+!data/uploads/.gitkeep
+/data/parsed_cv.json
+*.json
