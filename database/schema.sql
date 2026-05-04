@@ -49,14 +49,14 @@ CREATE TABLE Skills (
     skill_id   INT          NOT NULL AUTO_INCREMENT,
     skill_name VARCHAR(100) NOT NULL,
     category   ENUM(
-        'programming',
-        'database',
-        'framework',
-        'cloud_devops',
-        'tools',
-        'data_science',
-        'web_technology',
-        'soft_skill'
+    'programming',
+    'database',
+    'framework',
+    'cloud',
+    'tools',
+    'data',
+    'web',
+    'soft'
     ) NOT NULL,
 
     PRIMARY KEY (skill_id),
