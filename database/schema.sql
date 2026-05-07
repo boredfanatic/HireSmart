@@ -21,6 +21,7 @@ CREATE TABLE Candidates (
     phone        VARCHAR(20)           DEFAULT NULL,
     resume_path  VARCHAR(500)          DEFAULT NULL,
     created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (candidate_id),
     UNIQUE  KEY uq_candidates_user (user_id),
@@ -37,6 +38,7 @@ CREATE TABLE Employers (
     company_name        VARCHAR(255) NOT NULL,
     company_description TEXT                  DEFAULT NULL,
     created_at          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (employer_id),
     UNIQUE  KEY uq_employers_user    (user_id),
@@ -156,6 +158,7 @@ CREATE TABLE Applications (
     UNIQUE KEY uq_application   (job_id, candidate_id),
     INDEX  idx_app_candidate    (candidate_id),
     INDEX  idx_app_status       (status),
+    INDEX idx_app_job_candidate (job_id, candidate_id),
 
     CONSTRAINT fk_app_job
         FOREIGN KEY (job_id)       REFERENCES Jobs(job_id)

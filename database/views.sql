@@ -25,7 +25,7 @@ SELECT
     j.location,
     j.salary_range,
     j.status,
-    j.application_limit,                        
+    j.application_limit,
     j.created_at,
     e.employer_id,
     e.company_name,
@@ -44,7 +44,7 @@ GROUP BY
     j.location,
     j.salary_range,
     j.status,
-    j.application_limit,                        -
+    j.application_limit,
     j.created_at,
     e.employer_id,
     e.company_name,
