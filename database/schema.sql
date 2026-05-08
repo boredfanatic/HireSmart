@@ -180,6 +180,7 @@ CREATE TABLE Interviews (
     created_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (interview_id),
+    UNIQUE KEY uq_interview_round  (application_id, round_number),
     INDEX idx_iv_application (application_id),
     INDEX idx_iv_date        (interview_date),
 

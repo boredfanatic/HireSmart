@@ -1,6 +1,6 @@
 -- =============================================================
 --  HireSmart Sample Data
---  Run AFTER schema.sql and triggers.sql
+--  Run AFTER schema.sql, procedures.sql, and triggers.sql
 -- =============================================================
 
 USE HireSmart;
@@ -8,85 +8,86 @@ USE HireSmart;
 -- -------------------------------------------------------------
 -- 1. Skills  (only categories defined in the ENUM are used)
 --    ENUM: programming | database | framework | cloud |
---          tools | data | web | soft
+--          tools | data | web | soft | engineering | science | education
 -- -------------------------------------------------------------
 INSERT INTO Skills (skill_name, category) VALUES
 -- Programming
-('python',              'programming'),
-('java',                'programming'),
-('c++',                 'programming'),
-('javascript',          'programming'),
-('c#',                  'programming'),
-('r',                   'programming'),
-('kotlin',              'programming'),
-('swift',               'programming'),
+('Python',              'programming'),
+('Java',                'programming'),
+('C++',                 'programming'),
+('JavaScript',          'programming'),
+('C#',                  'programming'),
+('R',                   'programming'),
+('Kotlin',              'programming'),
+('Swift',               'programming'),
 
 -- Database
-('mysql',               'database'),
-('postgresql',          'database'),
-('mongodb',             'database'),
-('oracle',              'database'),
-('redis',               'database'),
+('MySQL',               'database'),
+('PostgreSQL',          'database'),
+('MongoDB',             'database'),
+('Oracle',              'database'),
+('Redis',               'database'),
 
 -- Framework
-('react',               'framework'),
-('angular',             'framework'),
-('django',              'framework'),
-('flask',               'framework'),
-('spring boot',         'framework'),
-('node.js',             'framework'),
-('vue.js',              'framework'),
+('React',               'framework'),
+('Angular',             'framework'),
+('Django',              'framework'),
+('Flask',               'framework'),
+('Spring Boot',         'framework'),
+('Node.js',             'framework'),
+('Vue.js',              'framework'),
 
 -- Cloud / DevOps
-('aws',                 'cloud'),
-('azure',               'cloud'),
-('docker',              'cloud'),
-('kubernetes',          'cloud'),
-('gcp',                 'cloud'),
+('AWS',                 'cloud'),
+('Azure',               'cloud'),
+('Docker',              'cloud'),
+('Kubernetes',          'cloud'),
+('Google Cloud',        'cloud'),
 
 -- Tools
-('git',                 'tools'),
-('jira',                'tools'),
-('vs code',             'tools'),
-('postman',             'tools'),
-('linux',               'tools'),
+('Git',                 'tools'),
+('JIRA',                'tools'),
+('VS Code',             'tools'),
+('Postman',             'tools'),
+('Linux',               'tools'),
 
 -- Data / Analytics
-('machine learning',    'data'),
-('data analysis',       'data'),
-('tableau',             'data'),
-('power bi',            'data'),
-('tensorflow',          'data'),
-('pandas',              'data'),
-('deep learning',       'data'),
+('Machine Learning',    'data'),
+('Data Analysis',       'data'),
+('Tableau',             'data'),
+('Power BI',            'data'),
+('TensorFlow',          'data'),
+('Pandas',              'data'),
+('Deep Learning',       'data'),
 
 -- Web / Design
-('html',                'web'),
-('css',                 'web'),
-('ui ux',               'web'),
-('figma',               'web'),
-('rest api',            'web'),
-('graphql',             'web'),
+('HTML',                'web'),
+('CSS',                 'web'),
+('UI/UX',               'web'),
+('Figma',               'web'),
+('REST API',            'web'),
+('GraphQL',             'web'),
 
 -- Soft Skills
--- (autocad, solidworks, embedded systems, biology, teaching, etc.
---  are mapped to the closest ENUM category or kept as soft skills
---  since the schema has no engineering/science/education category)
-('communication',       'soft'),
-('leadership',          'soft'),
-('teamwork',            'soft'),
-('recruitment',         'soft'),
-('sales',               'soft'),
-('marketing',           'soft'),
-('accounting',          'soft'),
-('project management',  'soft'),
-('problem solving',     'soft'),
-('time management',     'soft'),
-('teaching',            'soft'),
-('autocad',             'tools'),
-('solidworks',          'tools'),
-('embedded systems',    'tools'),
-('circuit design',      'tools');
+('Communication',       'soft'),
+('Leadership',          'soft'),
+('Teamwork',            'soft'),
+('Recruitment',         'soft'),
+('Sales',               'soft'),
+('Marketing',           'soft'),
+('Accounting',          'soft'),
+('Project Management',  'soft'),
+('Problem Solving',     'soft'),
+('Time Management',     'soft'),
+
+-- Engineering
+('AutoCAD',             'engineering'),
+('SolidWorks',          'engineering'),
+('Embedded Systems',    'engineering'),
+('Circuit Design',      'engineering'),
+
+-- Education
+('Teaching',            'education');
 
 
 -- -------------------------------------------------------------
@@ -175,65 +176,65 @@ INSERT INTO CandidateSkills (candidate_id, skill_id, proficiency_level) VALUES
 
 -- Alice: Python developer
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='python'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Python'), 9),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='mysql'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='MySQL'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='django'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Django'), 7),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='git'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Git'), 8),
 
 -- Bob: Java + Data
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='bob@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='java'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Java'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='bob@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='data analysis'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Data Analysis'), 7),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='bob@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='tableau'), 6),
+ (SELECT skill_id FROM Skills WHERE skill_name='Tableau'), 6),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='bob@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='postgresql'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='PostgreSQL'), 7),
 
 -- Charlie: Frontend
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='charlie@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='react'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='React'), 9),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='charlie@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='javascript'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='JavaScript'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='charlie@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='html'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='HTML'), 9),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='charlie@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='css'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='CSS'), 8),
 
 -- David: Engineering
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='david@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='autocad'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='AutoCAD'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='david@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='solidworks'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='SolidWorks'), 7),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='david@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='embedded systems'), 6),
+ (SELECT skill_id FROM Skills WHERE skill_name='Embedded Systems'), 6),
 
 -- Eva: Designer
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='eva@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='figma'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Figma'), 9),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='eva@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='ui ux'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='UI/UX'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='eva@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='css'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='CSS'), 7),
 
 -- Frank: Marketing + Soft skills
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='frank@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='marketing'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Marketing'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='frank@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='sales'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Sales'), 7),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='frank@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='communication'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Communication'), 9),
 
 -- Grace: Teacher + HR
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='grace@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='teaching'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Teaching'), 9),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='grace@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='recruitment'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Recruitment'), 8),
 ((SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='grace@mail.com'),
- (SELECT skill_id FROM Skills WHERE skill_name='communication'), 8);
+ (SELECT skill_id FROM Skills WHERE skill_name='Communication'), 8);
 
 
 -- -------------------------------------------------------------
@@ -243,85 +244,85 @@ INSERT INTO JobSkills (job_id, skill_id, weight) VALUES
 
 -- Software Engineer
 ((SELECT job_id FROM Jobs WHERE job_title='Software Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='python'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Python'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Software Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='mysql'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='MySQL'), 8),
 ((SELECT job_id FROM Jobs WHERE job_title='Software Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='git'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Git'), 7),
 
 -- Full Stack Developer
 ((SELECT job_id FROM Jobs WHERE job_title='Full Stack Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='javascript'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='JavaScript'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Full Stack Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='react'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='React'), 8),
 ((SELECT job_id FROM Jobs WHERE job_title='Full Stack Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='node.js'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Node.js'), 8),
 ((SELECT job_id FROM Jobs WHERE job_title='Full Stack Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='mysql'), 6),
+ (SELECT skill_id FROM Skills WHERE skill_name='MySQL'), 6),
 
 -- HR Manager
 ((SELECT job_id FROM Jobs WHERE job_title='HR Manager'),
- (SELECT skill_id FROM Skills WHERE skill_name='recruitment'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Recruitment'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='HR Manager'),
- (SELECT skill_id FROM Skills WHERE skill_name='communication'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Communication'), 8),
 ((SELECT job_id FROM Jobs WHERE job_title='HR Manager'),
- (SELECT skill_id FROM Skills WHERE skill_name='leadership'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Leadership'), 7),
 
 -- Data Analyst
 ((SELECT job_id FROM Jobs WHERE job_title='Data Analyst'),
- (SELECT skill_id FROM Skills WHERE skill_name='data analysis'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Data Analysis'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Data Analyst'),
- (SELECT skill_id FROM Skills WHERE skill_name='tableau'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Tableau'), 8),
 ((SELECT job_id FROM Jobs WHERE job_title='Data Analyst'),
- (SELECT skill_id FROM Skills WHERE skill_name='python'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Python'), 7),
 ((SELECT job_id FROM Jobs WHERE job_title='Data Analyst'),
- (SELECT skill_id FROM Skills WHERE skill_name='postgresql'), 6),
+ (SELECT skill_id FROM Skills WHERE skill_name='PostgreSQL'), 6),
 
 -- Frontend Developer
 ((SELECT job_id FROM Jobs WHERE job_title='Frontend Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='react'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='React'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Frontend Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='javascript'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='JavaScript'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Frontend Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='html'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='HTML'), 7),
 ((SELECT job_id FROM Jobs WHERE job_title='Frontend Developer'),
- (SELECT skill_id FROM Skills WHERE skill_name='css'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='CSS'), 7),
 
 -- Mechanical Engineer
 ((SELECT job_id FROM Jobs WHERE job_title='Mechanical Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='solidworks'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='SolidWorks'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Mechanical Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='autocad'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='AutoCAD'), 8),
 
 -- Embedded Systems Engineer
 ((SELECT job_id FROM Jobs WHERE job_title='Embedded Systems Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='embedded systems'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Embedded Systems'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Embedded Systems Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='circuit design'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Circuit Design'), 8),
 ((SELECT job_id FROM Jobs WHERE job_title='Embedded Systems Engineer'),
- (SELECT skill_id FROM Skills WHERE skill_name='c++'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='C++'), 7),
 
 -- UI UX Designer
 ((SELECT job_id FROM Jobs WHERE job_title='UI UX Designer'),
- (SELECT skill_id FROM Skills WHERE skill_name='ui ux'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='UI/UX'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='UI UX Designer'),
- (SELECT skill_id FROM Skills WHERE skill_name='figma'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Figma'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='UI UX Designer'),
- (SELECT skill_id FROM Skills WHERE skill_name='css'), 6),
+ (SELECT skill_id FROM Skills WHERE skill_name='CSS'), 6),
 
 -- Teacher
 ((SELECT job_id FROM Jobs WHERE job_title='Teacher'),
- (SELECT skill_id FROM Skills WHERE skill_name='teaching'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Teaching'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Teacher'),
- (SELECT skill_id FROM Skills WHERE skill_name='communication'), 8),
+ (SELECT skill_id FROM Skills WHERE skill_name='Communication'), 8),
 
 -- Digital Marketing Executive
 ((SELECT job_id FROM Jobs WHERE job_title='Digital Marketing Executive'),
- (SELECT skill_id FROM Skills WHERE skill_name='marketing'), 9),
+ (SELECT skill_id FROM Skills WHERE skill_name='Marketing'), 9),
 ((SELECT job_id FROM Jobs WHERE job_title='Digital Marketing Executive'),
- (SELECT skill_id FROM Skills WHERE skill_name='sales'), 7),
+ (SELECT skill_id FROM Skills WHERE skill_name='Sales'), 7),
 ((SELECT job_id FROM Jobs WHERE job_title='Digital Marketing Executive'),
- (SELECT skill_id FROM Skills WHERE skill_name='communication'), 6);
+ (SELECT skill_id FROM Skills WHERE skill_name='Communication'), 6);
 
 
 -- -------------------------------------------------------------
@@ -331,77 +332,77 @@ INSERT INTO JobSkills (job_id, skill_id, weight) VALUES
 -- -------------------------------------------------------------
 INSERT INTO Applications (job_id, candidate_id, status) VALUES
 
--- Alice → Software Engineer (good match: python+mysql+git)
+-- Alice → Software Engineer (good match: Python+MySQL+Git)
 ((SELECT job_id FROM Jobs WHERE job_title='Software Engineer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
  'shortlisted'),
 
--- Alice → Data Analyst (partial match: python)
+-- Alice → Data Analyst (partial match: Python)
 ((SELECT job_id FROM Jobs WHERE job_title='Data Analyst'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
  'pending'),
 
--- Bob → Data Analyst (good match: data analysis+tableau+postgresql)
+-- Bob → Data Analyst (good match: Data Analysis+Tableau+PostgreSQL)
 ((SELECT job_id FROM Jobs WHERE job_title='Data Analyst'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='bob@mail.com'),
  'shortlisted'),
 
--- Bob → Software Engineer (partial match: java only)
+-- Bob → Software Engineer (partial match: Java only)
 ((SELECT job_id FROM Jobs WHERE job_title='Software Engineer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='bob@mail.com'),
  'pending'),
 
--- Charlie → Frontend Developer (strong match: react+js+html+css)
+-- Charlie → Frontend Developer (strong match: React+JS+HTML+CSS)
 ((SELECT job_id FROM Jobs WHERE job_title='Frontend Developer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='charlie@mail.com'),
  'shortlisted'),
 
--- Charlie → Full Stack Developer (partial: react+js)
+-- Charlie → Full Stack Developer (partial: React+JS)
 ((SELECT job_id FROM Jobs WHERE job_title='Full Stack Developer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='charlie@mail.com'),
  'pending'),
 
--- David → Mechanical Engineer (good: solidworks+autocad)
+-- David → Mechanical Engineer (good: SolidWorks+AutoCAD)
 ((SELECT job_id FROM Jobs WHERE job_title='Mechanical Engineer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='david@mail.com'),
  'shortlisted'),
 
--- David → Embedded Systems Engineer (partial: embedded systems)
+-- David → Embedded Systems Engineer (partial: Embedded Systems)
 ((SELECT job_id FROM Jobs WHERE job_title='Embedded Systems Engineer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='david@mail.com'),
  'pending'),
 
--- Eva → UI UX Designer (strong: ui ux+figma+css)
+-- Eva → UI UX Designer (strong: UI/UX+Figma+CSS)
 ((SELECT job_id FROM Jobs WHERE job_title='UI UX Designer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='eva@mail.com'),
  'shortlisted'),
 
--- Eva → Frontend Developer (partial: css)
+-- Eva → Frontend Developer (partial: CSS)
 ((SELECT job_id FROM Jobs WHERE job_title='Frontend Developer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='eva@mail.com'),
  'pending'),
 
--- Frank → Digital Marketing Executive (strong: marketing+sales+communication)
+-- Frank → Digital Marketing Executive (strong: Marketing+Sales+Communication)
 ((SELECT job_id FROM Jobs WHERE job_title='Digital Marketing Executive'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='frank@mail.com'),
  'shortlisted'),
 
--- Frank → HR Manager (partial: communication)
+-- Frank → HR Manager (partial: Communication)
 ((SELECT job_id FROM Jobs WHERE job_title='HR Manager'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='frank@mail.com'),
  'pending'),
 
--- Grace → Teacher (strong: teaching+communication)
+-- Grace → Teacher (strong: Teaching+Communication)
 ((SELECT job_id FROM Jobs WHERE job_title='Teacher'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='grace@mail.com'),
  'shortlisted'),
 
--- Grace → HR Manager (good: recruitment+communication)
+-- Grace → HR Manager (good: Recruitment+Communication)
 ((SELECT job_id FROM Jobs WHERE job_title='HR Manager'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='grace@mail.com'),
  'shortlisted'),
 
--- Alice → Full Stack Developer (partial: python+mysql)
+-- Alice → Full Stack Developer (partial: Python+MySQL)
 ((SELECT job_id FROM Jobs WHERE job_title='Full Stack Developer'),
  (SELECT c.candidate_id FROM Candidates c JOIN Users u ON c.user_id=u.user_id WHERE u.email='alice@mail.com'),
  'rejected');

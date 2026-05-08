@@ -1,3 +1,5 @@
+USE HireSmart;
+
 -- =============================================================
 -- FUNCTION: CalculateMatchScore
 --   Input : p_candidate_id, p_job_id

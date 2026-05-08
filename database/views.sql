@@ -1,3 +1,5 @@
+USE HireSmart;
+
 CREATE VIEW CandidateProfileView AS
 SELECT
     c.candidate_id,

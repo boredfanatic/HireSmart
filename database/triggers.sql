@@ -1,3 +1,5 @@
+USE HireSmart;
+
 -- =============================================================
 -- TRIGGER 1: trg_calc_match_on_apply
 --   Fires  : AFTER INSERT on Applications
