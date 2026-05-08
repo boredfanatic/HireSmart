@@ -294,7 +294,7 @@ BEGIN
     DECLARE v_limit INT;
     DECLARE v_status VARCHAR(10);
 
-    SELECT COUNT(*), j.application_limit, j.status
+    SELECT COUNT(a.application_id), j.application_limit, j.status
     INTO   v_total, v_limit, v_status
     FROM   Jobs j
     LEFT JOIN Applications a ON j.job_id = a.job_id
