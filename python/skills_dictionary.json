@@ -1,127 +1,92 @@
 {
-  "programming_and_it": [
+  "programming": [
     "Python", "Java", "C", "C++", "C#", "JavaScript", "TypeScript",
     "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "R",
-    "HTML", "CSS", "Bootstrap", "Tailwind CSS",
-    "React", "Angular", "Vue.js", "Node.js", "Express.js",
-    "Django", "Flask", "Spring Boot",
-    "REST API", "GraphQL", "JSON", "XML",
-    "Git", "GitHub", "GitLab",
-    "MySQL", "PostgreSQL", "MongoDB", "SQLite",
-    "AWS", "Azure", "Google Cloud",
-    "Docker", "Kubernetes",
-    "Cybersecurity", "Network Security", "Ethical Hacking",
-    "Machine Learning", "Artificial Intelligence", "Data Analysis"
-  ],
-
-  "software_engineering": [
     "Object-Oriented Programming", "Data Structures", "Algorithms",
-    "System Design", "Debugging", "Unit Testing",
-    "Agile", "Scrum", "DevOps", "CI/CD"
+    "System Design", "Cybersecurity", "Network Security", "Ethical Hacking"
   ],
 
-  "mechanical_engineering": [
+  "database": [
+    "MySQL", "PostgreSQL", "MongoDB", "SQLite", "SQL"
+  ],
+
+  "framework": [
+    "React", "Angular", "Vue.js", "Node.js", "Express.js",
+    "Django", "Flask", "Spring Boot"
+  ],
+
+  "cloud": [
+    "AWS", "Azure", "Google Cloud",
+    "Docker", "Kubernetes", "DevOps", "CI/CD"
+  ],
+
+  "tools": [
+    "Git", "GitHub", "GitLab",
+    "Debugging", "Unit Testing", "Agile", "Scrum",
     "AutoCAD", "SolidWorks", "CATIA", "Fusion 360",
-    "Thermodynamics", "Fluid Mechanics",
-    "Heat Transfer", "Manufacturing Processes",
-    "CNC Programming", "Quality Control",
-    "Mechanical Design", "HVAC Systems",
-    "Product Design", "3D Printing"
-  ],
-
-  "electronics_and_electrical": [
-    "Circuit Design", "Analog Electronics", "Digital Electronics",
-    "Embedded Systems", "Microcontrollers",
-    "Arduino", "Raspberry Pi",
-    "VLSI Design", "PCB Design",
     "MATLAB", "Simulink",
-    "Signal Processing", "Power Systems"
+    "Adobe Photoshop", "Adobe Illustrator", "Figma", "Canva",
+    "Tally", "Excel", "Advanced Excel"
   ],
 
-  "civil_engineering": [
+  "data": [
+    "Machine Learning", "Artificial Intelligence", "Data Analysis",
+    "Data Visualization", "Statistics", "Data Cleaning",
+    "Power BI", "Tableau"
+  ],
+
+  "web": [
+    "HTML", "CSS", "Bootstrap", "Tailwind CSS",
+    "REST API", "GraphQL", "JSON", "XML",
+    "UI Design", "UX Design", "Graphic Design",
+    "Video Editing", "Animation", "Storyboarding"
+  ],
+
+  "soft": [
+    "Communication", "Leadership", "Teamwork",
+    "Problem Solving", "Critical Thinking", "Time Management",
+    "Adaptability", "Creativity", "Work Ethic",
+    "Collaboration", "Decision Making", "Emotional Intelligence",
+    "Negotiation", "Presentation Skills",
+    "Project Management", "Operations Management", "Strategic Planning",
+    "Business Analysis", "Entrepreneurship", "Supply Chain Management",
+    "Logistics", "Risk Management",
+    "Recruitment", "Talent Acquisition", "Employee Engagement",
+    "Payroll Management", "Performance Management", "HR Analytics",
+    "Onboarding", "Conflict Resolution", "Labor Laws",
+    "Training and Development",
+    "Accounting", "Financial Analysis", "Budgeting", "Taxation",
+    "Auditing", "Financial Modeling", "Investment Analysis", "Cost Accounting",
+    "Digital Marketing", "SEO", "SEM", "Content Marketing",
+    "Social Media Marketing", "Email Marketing", "Brand Management",
+    "Market Research", "Sales Strategy", "Customer Relationship Management",
+    "Advertising",
+    "Content Writing", "Copywriting", "Editing", "Proofreading",
+    "Translation", "Transcription", "Research Writing", "Journalism",
+    "Public Speaking", "Creative Writing",
+    "English", "Hindi", "Spanish", "French", "German",
+    "Chinese", "Japanese", "Arabic"
+  ],
+
+  "engineering": [
+    "Thermodynamics", "Fluid Mechanics", "Heat Transfer",
+    "Manufacturing Processes", "CNC Programming", "Quality Control",
+    "Mechanical Design", "HVAC Systems", "Product Design", "3D Printing",
+    "Circuit Design", "Analog Electronics", "Digital Electronics",
+    "Embedded Systems", "Microcontrollers", "Arduino", "Raspberry Pi",
+    "VLSI Design", "PCB Design", "Signal Processing", "Power Systems",
     "Structural Analysis", "Surveying", "Construction Management",
     "Building Design", "Geotechnical Engineering",
-    "Project Planning", "Site Supervision",
-    "Quantity Surveying"
+    "Project Planning", "Site Supervision", "Quantity Surveying"
   ],
 
-  "business_and_management": [
-    "Project Management", "Operations Management",
-    "Strategic Planning", "Business Analysis",
-    "Entrepreneurship", "Supply Chain Management",
-    "Logistics", "Risk Management"
+  "science": [
+    "Biology", "Chemistry", "Laboratory Skills",
+    "Clinical Research", "Pharmacology", "Medical Coding"
   ],
 
-  "human_resources": [
-    "Recruitment", "Talent Acquisition",
-    "Employee Engagement", "Payroll Management",
-    "Performance Management", "HR Analytics",
-    "Onboarding", "Conflict Resolution",
-    "Labor Laws", "Training and Development"
-  ],
-
-  "finance_and_accounting": [
-    "Accounting", "Financial Analysis",
-    "Budgeting", "Taxation", "Auditing",
-    "Financial Modeling", "Investment Analysis",
-    "Cost Accounting", "Tally", "Excel"
-  ],
-
-  "marketing_and_sales": [
-    "Digital Marketing", "SEO", "SEM",
-    "Content Marketing", "Social Media Marketing",
-    "Email Marketing", "Brand Management",
-    "Market Research", "Sales Strategy",
-    "Customer Relationship Management", "Advertising"
-  ],
-
-  "design_and_creative": [
-    "Graphic Design", "UI Design", "UX Design",
-    "Adobe Photoshop", "Adobe Illustrator",
-    "Figma", "Canva",
-    "Video Editing", "Animation",
-    "Storyboarding", "Creative Writing"
-  ],
-
-  "arts_and_humanities": [
-    "Content Writing", "Copywriting",
-    "Editing", "Proofreading",
-    "Translation", "Transcription",
-    "Research Writing", "Journalism",
-    "Public Speaking"
-  ],
-
-  "languages": [
-    "English", "Hindi", "Spanish", "French",
-    "German", "Chinese", "Japanese",
-    "Arabic"
-  ],
-
-  "data_and_analytics": [
-    "Advanced Excel", "Power BI",
-    "Tableau", "Data Visualization",
-    "Statistics", "SQL", "Data Cleaning"
-  ],
-
-  "healthcare_and_science": [
-    "Biology", "Chemistry",
-    "Laboratory Skills", "Clinical Research",
-    "Pharmacology", "Medical Coding"
-  ],
-
-  "education_and_training": [
-    "Teaching", "Curriculum Design",
-    "Lesson Planning", "Classroom Management",
-    "E-Learning", "Tutoring", "Assessment Design"
-  ],
-
-  "soft_skills": [
-    "Communication", "Leadership", "Teamwork",
-    "Problem Solving", "Critical Thinking",
-    "Time Management", "Adaptability",
-    "Creativity", "Work Ethic",
-    "Collaboration", "Decision Making",
-    "Emotional Intelligence", "Negotiation",
-    "Presentation Skills"
+  "education": [
+    "Teaching", "Curriculum Design", "Lesson Planning",
+    "Classroom Management", "E-Learning", "Tutoring", "Assessment Design"
   ]
 }

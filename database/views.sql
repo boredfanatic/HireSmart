@@ -80,7 +80,7 @@ SELECT
     j.job_id,
     j.job_title,
     j.status            AS job_status,
-    j.application_limit,                        -- ← new column
+    j.application_limit,
     e.company_name,
     COUNT(a.application_id)                  AS total_applicants,
     ROUND(AVG(a.match_score), 2)             AS avg_match_score,

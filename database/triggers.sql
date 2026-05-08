@@ -1,20 +1,23 @@
 USE HireSmart;
 
+DROP TRIGGER IF EXISTS trg_calc_match_on_apply;
+DROP TRIGGER IF EXISTS trg_update_status_on_interview;
+DROP TRIGGER IF EXISTS trg_prevent_duplicate_application;
+DROP TRIGGER IF EXISTS trg_auto_close_job;
+
 -- =============================================================
 -- TRIGGER 1: trg_calc_match_on_apply
---   Fires  : AFTER INSERT on Applications
+--   Fires  : BEFORE INSERT on Applications
 --   Action : Calculates match score using CalculateMatchScore()
---            and writes it back into the new row.
+--            and sets it on the new row before it is written.
 -- =============================================================
 DELIMITER $$
 
 CREATE TRIGGER trg_calc_match_on_apply
-AFTER INSERT ON Applications
+BEFORE INSERT ON Applications
 FOR EACH ROW
 BEGIN
-    UPDATE Applications
-    SET    match_score = CalculateMatchScore(NEW.candidate_id, NEW.job_id)
-    WHERE  application_id = NEW.application_id;
+    SET NEW.match_score = CalculateMatchScore(NEW.candidate_id, NEW.job_id);
 END$$
 
 DELIMITER ;

@@ -155,10 +155,9 @@ CREATE TABLE Applications (
     applied_at     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (application_id),
-    UNIQUE KEY uq_application   (job_id, candidate_id),
-    INDEX  idx_app_candidate    (candidate_id),
-    INDEX  idx_app_status       (status),
-    INDEX idx_app_job_candidate (job_id, candidate_id),
+    UNIQUE KEY uq_application (job_id, candidate_id),
+    INDEX  idx_app_candidate  (candidate_id),
+    INDEX  idx_app_status     (status),
 
     CONSTRAINT fk_app_job
         FOREIGN KEY (job_id)       REFERENCES Jobs(job_id)

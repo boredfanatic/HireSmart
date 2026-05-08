@@ -5,6 +5,19 @@
 
 USE HireSmart;
 
+-- Clear all tables in reverse FK order so this file is safe to re-run
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE Interviews;
+TRUNCATE TABLE Applications;
+TRUNCATE TABLE JobSkills;
+TRUNCATE TABLE CandidateSkills;
+TRUNCATE TABLE Jobs;
+TRUNCATE TABLE Candidates;
+TRUNCATE TABLE Employers;
+TRUNCATE TABLE Skills;
+TRUNCATE TABLE Users;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- -------------------------------------------------------------
 -- 1. Skills  (only categories defined in the ENUM are used)
 --    ENUM: programming | database | framework | cloud |
@@ -410,51 +423,57 @@ INSERT INTO Applications (job_id, candidate_id, status) VALUES
 
 -- -------------------------------------------------------------
 -- 9. Interviews
---    Reference application_id by job+candidate to avoid
---    fragile LIMIT 1 lookups.
+--    Pre-resolve application_ids into @variables so the INSERT
+--    does not read Applications while trg_update_status_on_interview
+--    is updating it (avoids MySQL Error 1442).
 -- -------------------------------------------------------------
+SET @app_alice_se = (
+    SELECT a.application_id FROM Applications a
+    JOIN Jobs j ON a.job_id = j.job_id
+    JOIN Candidates c ON a.candidate_id = c.candidate_id
+    JOIN Users u ON c.user_id = u.user_id
+    WHERE j.job_title = 'Software Engineer' AND u.email = 'alice@mail.com'
+);
+
+SET @app_bob_da = (
+    SELECT a.application_id FROM Applications a
+    JOIN Jobs j ON a.job_id = j.job_id
+    JOIN Candidates c ON a.candidate_id = c.candidate_id
+    JOIN Users u ON c.user_id = u.user_id
+    WHERE j.job_title = 'Data Analyst' AND u.email = 'bob@mail.com'
+);
+
+SET @app_charlie_fd = (
+    SELECT a.application_id FROM Applications a
+    JOIN Jobs j ON a.job_id = j.job_id
+    JOIN Candidates c ON a.candidate_id = c.candidate_id
+    JOIN Users u ON c.user_id = u.user_id
+    WHERE j.job_title = 'Frontend Developer' AND u.email = 'charlie@mail.com'
+);
+
+SET @app_grace_hr = (
+    SELECT a.application_id FROM Applications a
+    JOIN Jobs j ON a.job_id = j.job_id
+    JOIN Candidates c ON a.candidate_id = c.candidate_id
+    JOIN Users u ON c.user_id = u.user_id
+    WHERE j.job_title = 'HR Manager' AND u.email = 'grace@mail.com'
+);
+
+SET @app_eva_ux = (
+    SELECT a.application_id FROM Applications a
+    JOIN Jobs j ON a.job_id = j.job_id
+    JOIN Candidates c ON a.candidate_id = c.candidate_id
+    JOIN Users u ON c.user_id = u.user_id
+    WHERE j.job_title = 'UI UX Designer' AND u.email = 'eva@mail.com'
+);
+
 INSERT INTO Interviews (application_id, round_number, interview_date, interview_mode, status, notes)
 VALUES
-
--- Alice / Software Engineer — Round 1
-((SELECT a.application_id FROM Applications a
-  JOIN Jobs j ON a.job_id = j.job_id
-  JOIN Candidates c ON a.candidate_id = c.candidate_id
-  JOIN Users u ON c.user_id = u.user_id
-  WHERE j.job_title = 'Software Engineer' AND u.email = 'alice@mail.com'),
- 1, DATE_ADD(NOW(), INTERVAL 3 DAY), 'online', 'scheduled', 'Technical screening round'),
-
--- Bob / Data Analyst — Round 1
-((SELECT a.application_id FROM Applications a
-  JOIN Jobs j ON a.job_id = j.job_id
-  JOIN Candidates c ON a.candidate_id = c.candidate_id
-  JOIN Users u ON c.user_id = u.user_id
-  WHERE j.job_title = 'Data Analyst' AND u.email = 'bob@mail.com'),
- 1, DATE_ADD(NOW(), INTERVAL 5 DAY), 'online', 'scheduled', 'Case study presentation'),
-
--- Charlie / Frontend Developer — Round 1
-((SELECT a.application_id FROM Applications a
-  JOIN Jobs j ON a.job_id = j.job_id
-  JOIN Candidates c ON a.candidate_id = c.candidate_id
-  JOIN Users u ON c.user_id = u.user_id
-  WHERE j.job_title = 'Frontend Developer' AND u.email = 'charlie@mail.com'),
- 1, DATE_ADD(NOW(), INTERVAL 2 DAY), 'online', 'scheduled', 'UI coding challenge'),
-
--- Grace / HR Manager — Round 1
-((SELECT a.application_id FROM Applications a
-  JOIN Jobs j ON a.job_id = j.job_id
-  JOIN Candidates c ON a.candidate_id = c.candidate_id
-  JOIN Users u ON c.user_id = u.user_id
-  WHERE j.job_title = 'HR Manager' AND u.email = 'grace@mail.com'),
- 1, DATE_ADD(NOW(), INTERVAL 4 DAY), 'in_person', 'scheduled', 'HR behavioural interview'),
-
--- Eva / UI UX Designer — Round 1
-((SELECT a.application_id FROM Applications a
-  JOIN Jobs j ON a.job_id = j.job_id
-  JOIN Candidates c ON a.candidate_id = c.candidate_id
-  JOIN Users u ON c.user_id = u.user_id
-  WHERE j.job_title = 'UI UX Designer' AND u.email = 'eva@mail.com'),
- 1, DATE_ADD(NOW(), INTERVAL 6 DAY), 'online', 'scheduled', 'Portfolio review');
+(@app_alice_se,   1, DATE_ADD(NOW(), INTERVAL 3 DAY), 'online',    'scheduled', 'Technical screening round'),
+(@app_bob_da,     1, DATE_ADD(NOW(), INTERVAL 5 DAY), 'online',    'scheduled', 'Case study presentation'),
+(@app_charlie_fd, 1, DATE_ADD(NOW(), INTERVAL 2 DAY), 'online',    'scheduled', 'UI coding challenge'),
+(@app_grace_hr,   1, DATE_ADD(NOW(), INTERVAL 4 DAY), 'in_person', 'scheduled', 'HR behavioural interview'),
+(@app_eva_ux,     1, DATE_ADD(NOW(), INTERVAL 6 DAY), 'online',    'scheduled', 'Portfolio review');
 
 
 SELECT 'HireSmart sample data inserted successfully.' AS result;

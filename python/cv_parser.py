@@ -16,34 +16,36 @@ def extract_text_from_pdf(file_path):
     text = ""
     with pdfplumber.open(file_path) as pdf:
         for page in pdf.pages:
-            text += page.extract_text() + " "
+            text += (page.extract_text() or "") + " "
     return text.lower()
 
 def extract_skills(text, skills_list):
-    found_skills = set()
+    skill_counts = {}
 
     for skill in skills_list:
         pattern = r'\b' + re.escape(skill) + r'\b'
-        if re.search(pattern, text):
-            found_skills.add(skill)
+        matches = re.findall(pattern, text)
+        if matches:
+            skill_counts[skill] = len(matches)
 
-    return list(found_skills)
+    return skill_counts
 
 def parse_cv(file_path):
     text = extract_text_from_pdf(file_path)
 
-    skills_found_lower = extract_skills(text, all_skills_lower)
-    skills_found = [skill_map[s] for s in skills_found_lower]
+    counts_lower = extract_skills(text, all_skills_lower)
+    # map back to original casing and store counts
+    skill_counts = {skill_map[s]: count for s, count in counts_lower.items()}
 
     result = {
-        "skills": skills_found
+        "skills": skill_counts
     }
 
     with open("data/parsed_cv.json", "w") as f:
         json.dump(result, f, indent=4)
 
-    print("✅ Parsing complete. Skills extracted:")
-    print(skills_found)
+    print("Parsing complete. Skills extracted:")
+    print(list(skill_counts.keys()))
 
 if __name__ == "__main__":
     file_path = "data/uploads/resume.pdf"  

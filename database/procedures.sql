@@ -54,8 +54,8 @@ DELIMITER ;
 --           then inserts application.
 --
 --   NOTE: match_score is NOT set here manually.
---         trg_calc_match_on_apply fires AFTER INSERT and
---         fills match_score automatically.
+--         trg_calc_match_on_apply fires BEFORE INSERT and
+--         sets NEW.match_score automatically.
 --         trg_auto_close_job also fires AFTER INSERT and
 --         closes the job if application_limit is reached.
 --         trg_prevent_duplicate_application fires BEFORE

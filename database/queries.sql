@@ -190,7 +190,7 @@ ORDER BY open_jobs DESC;
 -- -------------------------------------------------------------
 -- Q11: Interview conversion rate per company
 --      (how many applications led to interviews)
---      Correlated subquery + aggregate
+--      Multi-table JOIN + aggregate + NULLIF for safe division
 -- -------------------------------------------------------------
 SELECT
     e.company_name,
@@ -199,7 +199,8 @@ SELECT
     ROUND(
         COUNT(DISTINCT i.interview_id) * 100.0
         / NULLIF(COUNT(DISTINCT a.application_id), 0),
-    2)                                AS conversion_rate_pct
+        2
+    )                                 AS conversion_rate_pct
 FROM Employers e
 INNER JOIN Jobs         j ON e.employer_id  = j.employer_id
 INNER JOIN Applications a ON j.job_id       = a.job_id
@@ -284,7 +285,7 @@ ORDER BY a.applied_at DESC;
 
 -- -------------------------------------------------------------
 -- Q15: Jobs nearing their application limit (>= 80% filled)
---      Subquery inside HAVING — useful for employer alerts
+--      Aggregate expression in HAVING — useful for employer alerts
 -- -------------------------------------------------------------
 SELECT
     j.job_id,
@@ -294,11 +295,12 @@ SELECT
     COUNT(a.application_id)  AS current_applications,
     ROUND(
         COUNT(a.application_id) * 100.0 / j.application_limit,
-    1)                       AS fill_pct
+        1
+    )                        AS fill_pct
 FROM Jobs j
 INNER JOIN Employers   e ON j.employer_id = e.employer_id
 LEFT  JOIN Applications a ON j.job_id     = a.job_id
 WHERE j.status = 'open'
 GROUP BY j.job_id, j.job_title, e.company_name, j.application_limit
-HAVING fill_pct >= 80
-ORDER BY fill_pct DESC;
+HAVING COUNT(a.application_id) * 100.0 / j.application_limit >= 80
+ORDER BY COUNT(a.application_id) * 100.0 / j.application_limit DESC;
