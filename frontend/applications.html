@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Applications — HireSmart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="sidebar-brand-text text-decoration-none">Hire<span>Smart</span></a>
+    </div>
+    <div class="sidebar-section-label">Main</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard_candidate.html" class="sidebar-link"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="jobs.html" class="sidebar-link"><i class="bi bi-briefcase"></i> Browse Jobs</a>
+      <a href="applications.html" class="sidebar-link active"><i class="bi bi-send"></i> My Applications</a>
+      <a href="parse_cv.html" class="sidebar-link"><i class="bi bi-file-earmark-person"></i> Parse CV</a>
+    </nav>
+    <div class="sidebar-section-label">Account</div>
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
+      <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);"><i class="bi bi-box-arrow-left"></i> Log Out</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">JS</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Jane Smith</div>
+          <div class="sidebar-user-role">Candidate</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="main-header">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+        <h1 class="main-header-title">My Applications</h1>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn-icon" type="button" title="Notifications"><i class="bi bi-bell"></i></button>
+        <div class="sidebar-avatar" style="width:36px;height:36px;font-size:.78rem;">JS</div>
+      </div>
+    </header>
+
+    <div class="main-body">
+
+      <!-- Summary cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3 animate-fade-up">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;" onclick="filterByStatus('all')" id="tab-all">
+            <div style="font-size:1.75rem;font-weight:800;color:var(--text);">7</div>
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Total</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 animate-fade-up delay-1">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;" onclick="filterByStatus('pending')" id="tab-pending">
+            <div style="font-size:1.75rem;font-weight:800;color:var(--warning);">3</div>
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Pending</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 animate-fade-up delay-2">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;" onclick="filterByStatus('shortlisted')" id="tab-shortlisted">
+            <div style="font-size:1.75rem;font-weight:800;color:var(--success);">2</div>
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Shortlisted</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 animate-fade-up delay-3">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s;" onclick="filterByStatus('interview_scheduled')" id="tab-interview">
+            <div style="font-size:1.75rem;font-weight:800;color:var(--primary);">1</div>
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Interview</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications list -->
+      <div class="card-modern animate-fade-up delay-1">
+        <div class="d-flex align-items-center justify-content-between p-4 pb-3 flex-wrap gap-3">
+          <div>
+            <h6 class="fw-700 mb-0">Application History</h6>
+            <p class="text-muted mb-0" style="font-size:.78rem;">Track your job application pipeline</p>
+          </div>
+          <div class="tabs-custom">
+            <button class="tab-btn active" onclick="setStatusFilter(this,'all')">All</button>
+            <button class="tab-btn" onclick="setStatusFilter(this,'pending')">Pending</button>
+            <button class="tab-btn" onclick="setStatusFilter(this,'shortlisted')">Shortlisted</button>
+            <button class="tab-btn" onclick="setStatusFilter(this,'interview')">Interviews</button>
+          </div>
+        </div>
+        <div class="section-divider" style="margin:0;"></div>
+
+        <div id="applicationsList">
+
+          <!-- Application row -->
+          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="shortlisted">
+            <div class="company-logo-placeholder flex-shrink-0">TS</div>
+            <div style="flex:1;min-width:0;">
+              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+                <div>
+                  <div class="fw-700" style="font-size:.95rem;">Full Stack Developer</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);">TechSphere Inc. · Remote</div>
+                </div>
+                <span class="badge-modern badge-shortlisted">Shortlisted</span>
+              </div>
+              <div class="d-flex flex-wrap gap-1 my-2">
+                <span class="skill-tag programming">Python</span>
+                <span class="skill-tag framework">React</span>
+                <span class="skill-tag database">MySQL</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 3 May 2025</span>
+                  <span style="font-size:.75rem;font-weight:700;color:var(--success);">Match: 88%</span>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="interview_scheduled">
+            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#10b981,#059669);">IN</div>
+            <div style="flex:1;min-width:0;">
+              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+                <div>
+                  <div class="fw-700" style="font-size:.95rem;">ML Engineer</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);">InnoTech · Remote</div>
+                </div>
+                <span class="badge-modern badge-interview">Interview Scheduled</span>
+              </div>
+              <div style="background:rgba(79,70,229,.06);border-radius:var(--radius-sm);padding:.75rem;margin:.6rem 0;border-left:3px solid var(--primary);">
+                <div style="font-size:.8rem;font-weight:600;color:var(--primary);"><i class="bi bi-calendar-check me-2"></i>Round 1 — Thu 15 May, 2:00 PM · Online</div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 29 Apr 2025</span>
+                  <span style="font-size:.75rem;font-weight:700;color:var(--success);">Match: 79%</span>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="pending">
+            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">CV</div>
+            <div style="flex:1;min-width:0;">
+              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+                <div>
+                  <div class="fw-700" style="font-size:.95rem;">Data Analyst</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);">CloudVision · Hybrid · Bangalore</div>
+                </div>
+                <span class="badge-modern badge-pending">Pending Review</span>
+              </div>
+              <div class="d-flex flex-wrap gap-1 my-2">
+                <span class="skill-tag data">Python</span>
+                <span class="skill-tag data">Tableau</span>
+                <span class="skill-tag database">SQL</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 1 May 2025</span>
+                  <span style="font-size:.75rem;font-weight:700;color:var(--warning);">Match: 63%</span>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
+                  <button class="btn btn-soft-danger btn-sm" onclick="withdrawApp(this)">Withdraw</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="rejected">
+            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#94a3b8,#64748b);">NX</div>
+            <div style="flex:1;min-width:0;opacity:.65;">
+              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+                <div>
+                  <div class="fw-700" style="font-size:.95rem;">Frontend Developer</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);">NexaCorps · On-site · Delhi</div>
+                </div>
+                <span class="badge-modern badge-rejected">Not Selected</span>
+              </div>
+              <div class="d-flex align-items-center gap-3 mt-2">
+                <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 18 Apr 2025</span>
+                <span style="font-size:.75rem;font-weight:700;color:var(--danger);">Match: 38%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 d-flex align-items-start gap-3" data-status="pending">
+            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">DD</div>
+            <div style="flex:1;min-width:0;">
+              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+                <div>
+                  <div class="fw-700" style="font-size:.95rem;">Backend Engineer</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);">DataDrive · On-site · Mumbai</div>
+                </div>
+                <span class="badge-modern badge-pending">Pending Review</span>
+              </div>
+              <div class="d-flex flex-wrap gap-1 my-2">
+                <span class="skill-tag programming">Java</span>
+                <span class="skill-tag framework">Spring Boot</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 28 Apr 2025</span>
+                  <span style="font-size:.75rem;font-weight:700;color:var(--danger);">Match: 43%</span>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
+                  <button class="btn btn-soft-danger btn-sm" onclick="withdrawApp(this)">Withdraw</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="ui.js"></script>
+<script src="api.js"></script>
+<script>
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+
+  function applyStatusFilter(status) {
+    const rows = document.querySelectorAll('#applicationsList [data-status]');
+    rows.forEach(row => {
+      if (status === 'all') {
+        row.style.display = '';
+      } else if (status === 'interview') {
+        row.style.display = row.dataset.status === 'interview_scheduled' ? '' : 'none';
+      } else {
+        row.style.display = row.dataset.status === status ? '' : 'none';
+      }
+    });
+  }
+
+  function setStatusFilter(btn, status) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyStatusFilter(status);
+  }
+
+  function filterByStatus(status) {
+    const normalized = status === 'interview_scheduled' ? 'interview' : status;
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      const text = btn.textContent.trim().toLowerCase();
+      btn.classList.toggle('active',
+        (normalized === 'all' && text === 'all') ||
+        (normalized === 'pending' && text === 'pending') ||
+        (normalized === 'shortlisted' && text === 'shortlisted') ||
+        (normalized === 'interview' && text === 'interviews')
+      );
+    });
+    applyStatusFilter(normalized);
+  }
+
+  function viewDetails(btn) {
+    const role = btn.closest('[data-status]').querySelector('.fw-700')?.textContent?.trim() || 'application';
+    showToast(`Showing demo details for ${role}.`, 'info');
+  }
+
+  function withdrawApp(btn) {
+    if (confirm('Withdraw this application?')) {
+      btn.closest('[data-status]').style.opacity = '.4';
+      btn.closest('[data-status]').dataset.status = 'withdrawn';
+      btn.remove();
+      showToast('Application withdrawn in the frontend demo.', 'success');
+    }
+  }
+
+  function applicationRow(app) {
+    const score = app.match_score !== null ? Math.round(app.match_score) : 0;
+    const interview = app.next_interview_date ? `
+      <div style="background:rgba(79,70,229,.06);border-radius:var(--radius-sm);padding:.75rem;margin:.6rem 0;border-left:3px solid var(--primary);">
+        <div style="font-size:.8rem;font-weight:600;color:var(--primary);"><i class="bi bi-calendar-check me-2"></i>${escapeHtml(app.next_interview_date)} · ${escapeHtml(app.next_interview_mode || '')}</div>
+      </div>` : '';
+
+    return `
+      <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="${escapeHtml(app.status)}">
+        <div class="company-logo-placeholder flex-shrink-0">${initials(app.company_name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+            <div>
+              <div class="fw-700" style="font-size:.95rem;">${escapeHtml(app.job_title)}</div>
+              <div style="font-size:.78rem;color:var(--text-muted);">${escapeHtml(app.company_name)} · ${escapeHtml(app.location || 'Not specified')}</div>
+            </div>
+            <span class="badge-modern ${statusClass(app.status)}">${statusLabel(app.status)}</span>
+          </div>
+          ${interview}
+          <div class="d-flex flex-wrap gap-1 my-2">${skillTags(app.skills)}</div>
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-3">
+              <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied ${escapeHtml(app.applied_at)}</span>
+              <span style="font-size:.75rem;font-weight:700;color:var(--success);">Match: ${score}%</span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function updateApplicationCounts(applications) {
+    const counts = {
+      all: applications.length,
+      pending: applications.filter(app => app.status === 'pending').length,
+      shortlisted: applications.filter(app => app.status === 'shortlisted').length,
+      interview_scheduled: applications.filter(app => app.status === 'interview_scheduled').length,
+    };
+
+    document.querySelector('#tab-all div').textContent = counts.all;
+    document.querySelector('#tab-pending div').textContent = counts.pending;
+    document.querySelector('#tab-shortlisted div').textContent = counts.shortlisted;
+    document.querySelector('#tab-interview div').textContent = counts.interview_scheduled;
+  }
+
+  async function loadApplications() {
+    await requireCurrentUser('candidate');
+    try {
+      const data = await apiRequest('get_applications.php');
+      document.getElementById('applicationsList').innerHTML = data.applications.length
+        ? data.applications.map(applicationRow).join('')
+        : '<div class="empty-state"><i class="bi bi-inbox"></i>No applications yet.</div>';
+      updateApplicationCounts(data.applications);
+    } catch (error) {
+      showToast(error.message, 'warning');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadApplications);
+</script>
+</body>
+</html>

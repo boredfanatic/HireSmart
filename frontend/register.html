@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — HireSmart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body style="background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;">
+
+  <div class="auth-card w-100" style="max-width:900px;">
+    <div class="row g-0" style="min-height:640px;">
+
+      <!-- Left panel -->
+      <div class="col-lg-5 auth-panel">
+        <a href="index.html" class="sidebar-brand-text mb-5 d-block text-decoration-none">
+          Hire<span>Smart</span>
+        </a>
+        <h2 style="color:#fff;font-weight:800;font-size:1.8rem;letter-spacing:-.02em;margin-bottom:.75rem;">Join HireSmart.</h2>
+        <p style="color:rgba(255,255,255,.55);font-size:.9rem;line-height:1.7;margin-bottom:2rem;">Create your account and start matching in minutes. Free for candidates, always.</p>
+
+        <div style="background:rgba(255,255,255,.07);border-radius:14px;padding:1.25rem;border:1px solid rgba(255,255,255,.1);">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-shield-check" style="color:#6ee7b7;font-size:1.1rem;"></i>
+            <span style="font-weight:600;color:#fff;font-size:.875rem;">Your data is safe</span>
+          </div>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.7rem;">
+            <li style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:rgba(255,255,255,.55);">
+              <i class="bi bi-check-circle-fill" style="color:#34d399;font-size:.85rem;flex-shrink:0;"></i>
+              Passwords are hashed and never stored in plaintext
+            </li>
+            <li style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:rgba(255,255,255,.55);">
+              <i class="bi bi-check-circle-fill" style="color:#34d399;font-size:.85rem;flex-shrink:0;"></i>
+              CVs stored securely, accessible only to you
+            </li>
+            <li style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:rgba(255,255,255,.55);">
+              <i class="bi bi-check-circle-fill" style="color:#34d399;font-size:.85rem;flex-shrink:0;"></i>
+              Your profile is only visible to matched employers
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="col-lg-7 auth-form-panel d-flex flex-column justify-content-center">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h3 class="fw-800 mb-0" style="letter-spacing:-.02em;">Create Account</h3>
+          <a href="index.html" style="font-size:.8rem;color:var(--text-muted);text-decoration:none;">
+            <i class="bi bi-arrow-left me-1"></i>Back
+          </a>
+        </div>
+
+        <!-- Role toggle -->
+        <div class="role-toggle mb-4">
+          <button type="button" class="role-btn active" id="btnCandidate" onclick="switchRole('candidate')">
+            <i class="bi bi-person"></i> I'm a Candidate
+          </button>
+          <button type="button" class="role-btn" id="btnEmployer" onclick="switchRole('employer')">
+            <i class="bi bi-building"></i> I'm an Employer
+          </button>
+        </div>
+
+        <form id="registerForm" novalidate>
+          <!-- Shared fields -->
+          <div class="row g-3">
+            <div class="col-12" id="fieldFullName">
+              <label class="form-label-custom">Full Name</label>
+              <div class="input-with-icon">
+                <i class="bi bi-person"></i>
+                <input type="text" class="form-control-custom" id="fullNameInput" placeholder="Jane Smith" required>
+              </div>
+            </div>
+
+            <div class="col-12" id="fieldCompanyName" style="display:none;">
+              <label class="form-label-custom">Company Name</label>
+              <div class="input-with-icon">
+                <i class="bi bi-building"></i>
+                <input type="text" class="form-control-custom" id="companyNameInput" placeholder="Acme Technologies" required>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label class="form-label-custom">Email Address</label>
+              <div class="input-with-icon">
+                <i class="bi bi-envelope"></i>
+                <input type="email" class="form-control-custom" id="registerEmailInput" placeholder="you@example.com" required>
+              </div>
+            </div>
+
+            <div class="col-sm-6" id="fieldPhone">
+              <label class="form-label-custom">Phone <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+              <div class="input-with-icon">
+                <i class="bi bi-telephone"></i>
+                <input type="tel" class="form-control-custom" id="phoneInput" placeholder="+1 555 000 0000">
+              </div>
+            </div>
+
+            <div class="col-12" id="fieldCompanyDesc" style="display:none;">
+              <label class="form-label-custom">Company Description <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+              <textarea class="form-control-custom" id="companyDescriptionInput" rows="2" placeholder="Tell candidates about your company..."></textarea>
+            </div>
+
+            <div class="col-sm-6">
+              <label class="form-label-custom">Password</label>
+              <div class="input-with-icon has-password-toggle">
+                <i class="bi bi-lock"></i>
+                <input type="password" class="form-control-custom" id="regPassword" placeholder="Min. 4 characters" required>
+                <button type="button" class="password-toggle" onclick="toggleRegPassword()" aria-label="Show password">
+                  <i class="bi bi-eye" id="regEyeIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label class="form-label-custom">Confirm Password</label>
+              <div class="input-with-icon">
+                <i class="bi bi-lock-fill"></i>
+                <input type="password" class="form-control-custom" id="confirmPasswordInput" placeholder="Repeat password" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start gap-2 mt-3 mb-4">
+            <input type="checkbox" id="termsCheck" style="accent-color:var(--primary);width:15px;height:15px;margin-top:3px;cursor:pointer;" required>
+            <label for="termsCheck" style="font-size:.82rem;color:var(--text-secondary);cursor:pointer;line-height:1.5;">
+              I agree to the <a href="#" style="color:var(--primary);font-weight:600;text-decoration:none;">Terms of Service</a> and <a href="#" style="color:var(--primary);font-weight:600;text-decoration:none;">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary-grad w-100 mb-3" style="padding:.85rem;" id="submitBtn">
+            <i class="bi bi-rocket-takeoff me-2"></i>Create Account
+          </button>
+
+          <div class="text-center">
+            <span style="font-size:.875rem;color:var(--text-muted);">Already have an account? </span>
+            <a href="login.html" style="font-size:.875rem;color:var(--primary);font-weight:600;text-decoration:none;">Sign in</a>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="ui.js"></script>
+  <script src="api.js"></script>
+  <script>
+    let currentRole = 'candidate';
+
+    function switchRole(role) {
+      currentRole = role;
+      document.getElementById('btnCandidate').classList.toggle('active', role === 'candidate');
+      document.getElementById('btnEmployer').classList.toggle('active', role === 'employer');
+
+      const isEmployer = role === 'employer';
+      document.getElementById('fieldFullName').style.display    = isEmployer ? 'none'  : '';
+      document.getElementById('fieldCompanyName').style.display = isEmployer ? ''      : 'none';
+      document.getElementById('fieldPhone').style.display       = isEmployer ? 'none'  : '';
+      document.getElementById('fieldCompanyDesc').style.display = isEmployer ? ''      : 'none';
+    }
+
+    function toggleRegPassword() {
+      const input = document.getElementById('regPassword');
+      const icon  = document.getElementById('regEyeIcon');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      icon.className = input.type === 'text' ? 'bi bi-eye-slash' : 'bi bi-eye';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const password = document.getElementById('regPassword').value;
+      if (password !== document.getElementById('confirmPasswordInput').value) {
+        showToast('Passwords do not match.', 'warning');
+        return;
+      }
+
+      const submit = document.getElementById('submitBtn');
+      submit.disabled = true;
+      submit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating...';
+
+      try {
+        const { user } = await apiRequest('register.php', {
+          method: 'POST',
+          body: JSON.stringify({
+            role: currentRole,
+            name: currentRole === 'employer'
+              ? document.getElementById('companyNameInput').value.trim()
+              : document.getElementById('fullNameInput').value.trim(),
+            email: document.getElementById('registerEmailInput').value.trim(),
+            phone: document.getElementById('phoneInput').value.trim(),
+            company_description: document.getElementById('companyDescriptionInput').value.trim(),
+            password,
+          }),
+        });
+        showToast('Account created successfully.', 'success');
+        window.location.href = user.user_type === 'employer' ? 'dashboard_employer.html' : 'dashboard_candidate.html';
+      } catch (error) {
+        showToast(error.message, 'warning');
+        submit.disabled = false;
+        submit.innerHTML = '<i class="bi bi-rocket-takeoff me-2"></i>Create Account';
+      }
+    });
+  </script>
+</body>
+</html>

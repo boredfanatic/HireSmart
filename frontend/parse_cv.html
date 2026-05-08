@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parse CV — HireSmart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="sidebar-brand-text text-decoration-none">Hire<span>Smart</span></a>
+    </div>
+    <div class="sidebar-section-label">Main</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard_candidate.html" class="sidebar-link"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="jobs.html" class="sidebar-link"><i class="bi bi-briefcase"></i> Browse Jobs</a>
+      <a href="applications.html" class="sidebar-link"><i class="bi bi-send"></i> My Applications</a>
+      <a href="parse_cv.html" class="sidebar-link active"><i class="bi bi-file-earmark-person"></i> Parse CV</a>
+    </nav>
+    <div class="sidebar-section-label">Account</div>
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
+      <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);"><i class="bi bi-box-arrow-left"></i> Log Out</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">JS</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Jane Smith</div>
+          <div class="sidebar-user-role">Candidate</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="main-header">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+        <h1 class="main-header-title">Parse CV</h1>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn-icon" type="button" title="Notifications"><i class="bi bi-bell"></i></button>
+        <div class="sidebar-avatar" style="width:36px;height:36px;font-size:.78rem;">JS</div>
+      </div>
+    </header>
+
+    <div class="main-body">
+
+      <div class="row g-4">
+
+        <!-- Left: Upload + Steps -->
+        <div class="col-lg-8">
+
+          <!-- Steps indicator -->
+          <div class="d-flex align-items-center gap-2 mb-4">
+            <div class="d-flex align-items-center gap-2" id="step1Indicator">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;">1</div>
+              <span style="font-size:.82rem;font-weight:600;color:var(--primary);">Upload CV</span>
+            </div>
+            <div style="flex:1;height:2px;background:var(--border);border-radius:99px;max-width:60px;"></div>
+            <div class="d-flex align-items-center gap-2" id="step2Indicator" style="opacity:.4;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--border-strong);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;">2</div>
+              <span style="font-size:.82rem;font-weight:600;color:var(--text-muted);">Parse &amp; Extract</span>
+            </div>
+            <div style="flex:1;height:2px;background:var(--border);border-radius:99px;max-width:60px;"></div>
+            <div class="d-flex align-items-center gap-2" id="step3Indicator" style="opacity:.4;">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--border-strong);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;">3</div>
+              <span style="font-size:.82rem;font-weight:600;color:var(--text-muted);">Save to Profile</span>
+            </div>
+          </div>
+
+          <!-- Upload zone -->
+          <div id="uploadSection">
+            <div class="upload-zone" id="dropZone"
+                 ondragover="handleDragOver(event)"
+                 ondragleave="handleDragLeave(event)"
+                 ondrop="handleDrop(event)"
+                 onclick="document.getElementById('fileInput').click()">
+              <div class="upload-icon-wrap">
+                <i class="bi bi-cloud-arrow-up"></i>
+              </div>
+              <h5 class="fw-700 mb-2">Drop your CV here</h5>
+              <p style="color:var(--text-muted);font-size:.875rem;margin-bottom:1.25rem;">or click to browse your files</p>
+              <div style="display:inline-flex;align-items:center;gap:.5rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-pill);padding:.4rem 1.1rem;font-size:.8rem;font-weight:600;color:var(--text-secondary);">
+                <i class="bi bi-file-earmark-pdf" style="color:#ef4444;"></i> PDF supported
+              </div>
+              <input type="file" id="fileInput" accept=".pdf" style="display:none;" onchange="handleFileSelect(event)">
+            </div>
+
+            <!-- Selected file preview -->
+            <div id="filePreview" style="display:none;margin-top:1rem;" class="card-modern p-3">
+              <div class="d-flex align-items-center gap-3">
+                <div style="width:44px;height:44px;background:rgba(239,68,68,.1);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <i class="bi bi-file-earmark-pdf" style="color:#ef4444;font-size:1.3rem;"></i>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div class="fw-600" style="font-size:.9rem;" id="fileName">resume.pdf</div>
+                  <div style="font-size:.75rem;color:var(--text-muted);" id="fileSize">2.4 MB</div>
+                </div>
+                <button class="btn-icon" type="button" onclick="clearFile()" title="Remove file"><i class="bi bi-x-lg"></i></button>
+              </div>
+              <button type="button" class="btn btn-primary-grad w-100 mt-3" onclick="startParsing()">
+                <i class="bi bi-cpu me-2"></i>Parse CV
+              </button>
+            </div>
+          </div>
+
+          <!-- Parsing state -->
+          <div id="parsingSection" style="display:none;">
+            <div class="card-modern p-5 text-center">
+              <div style="width:72px;height:72px;border-radius:50%;background:rgba(79,70,229,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;animation:float 2s ease-in-out infinite;">
+                <i class="bi bi-cpu" style="font-size:2rem;color:var(--primary);"></i>
+              </div>
+              <h5 class="fw-700 mb-2">Extracting Skills...</h5>
+              <p style="color:var(--text-muted);font-size:.875rem;margin-bottom:1.5rem;">Our parser is scanning your CV for technical and soft skills</p>
+              <div class="progress-modern mx-auto" style="max-width:300px;height:6px;">
+                <div class="bar" id="parseProgressBar" style="width:0%;transition:width .4s ease;"></div>
+              </div>
+              <p style="font-size:.75rem;color:var(--text-muted);margin-top:.75rem;" id="parseProgressText">Initialising parser…</p>
+            </div>
+          </div>
+
+          <!-- Results section -->
+          <div id="resultsSection" style="display:none;" class="animate-fade">
+            <div class="card-modern mb-4">
+              <div class="d-flex align-items-center justify-content-between p-4 pb-3">
+                <div>
+                  <h6 class="fw-700 mb-0">Extracted Skills</h6>
+                  <p class="text-muted mb-0" style="font-size:.78rem;" id="skillsFoundCount">7 skills found in your CV</p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-soft-primary btn-sm" onclick="resetParser()">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>Re-parse
+                  </button>
+                </div>
+              </div>
+              <div class="section-divider" style="margin:0;"></div>
+              <div class="p-4" id="extractedSkillsContainer">
+                <!-- Populated by JS demo -->
+              </div>
+            </div>
+
+            <div class="card-modern p-4 animate-fade-up" style="background:linear-gradient(135deg,rgba(79,70,229,.04),rgba(6,182,212,.04));border-color:rgba(79,70,229,.15);">
+              <div class="d-flex align-items-start gap-3">
+                <div style="width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(79,70,229,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <i class="bi bi-person-check" style="color:var(--primary);font-size:1.2rem;"></i>
+                </div>
+                <div style="flex:1;">
+                  <h6 class="fw-700 mb-1">Save to Profile</h6>
+                  <p style="font-size:.875rem;color:var(--text-secondary);margin-bottom:1rem;">These skills will be added to your candidate profile and used for job matching. Proficiency levels are estimated from how often each skill appeared in your CV.</p>
+                  <button type="button" class="btn btn-primary-grad" onclick="saveToProfile(this)">
+                    <i class="bi bi-cloud-upload me-2"></i>Save Skills to Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Tips & Info -->
+        <div class="col-lg-4">
+
+          <div class="card-modern p-4 mb-4">
+            <h6 class="fw-700 mb-3">How It Works</h6>
+            <div class="d-flex flex-column gap-3">
+              <div class="d-flex gap-3">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(79,70,229,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:.78rem;color:var(--primary);">1</div>
+                <div>
+                  <div style="font-weight:600;font-size:.875rem;margin-bottom:.25rem;">Upload PDF</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);line-height:1.6;">We accept standard CV/resume PDF files. Ensure text is selectable (not scanned image).</div>
+                </div>
+              </div>
+              <div class="d-flex gap-3">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(6,182,212,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:.78rem;color:var(--accent);">2</div>
+                <div>
+                  <div style="font-weight:600;font-size:.875rem;margin-bottom:.25rem;">Skill Extraction</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);line-height:1.6;">Python scans your CV and matches keywords against our 150+ skill dictionary.</div>
+                </div>
+              </div>
+              <div class="d-flex gap-3">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:.78rem;color:var(--success);">3</div>
+                <div>
+                  <div style="font-weight:600;font-size:.875rem;margin-bottom:.25rem;">Proficiency Scoring</div>
+                  <div style="font-size:.78rem;color:var(--text-muted);line-height:1.6;">Skills mentioned 3+ times → 9/10. Mentioned once or twice → 7/10.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-modern p-4">
+            <h6 class="fw-700 mb-3">Tips for Best Results</h6>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem;">
+              <li style="display:flex;gap:.6rem;font-size:.8rem;color:var(--text-secondary);">
+                <i class="bi bi-check-circle-fill" style="color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                Use text-based PDFs (not scanned images)
+              </li>
+              <li style="display:flex;gap:.6rem;font-size:.8rem;color:var(--text-secondary);">
+                <i class="bi bi-check-circle-fill" style="color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                Mention skills explicitly (e.g., "Python", "React")
+              </li>
+              <li style="display:flex;gap:.6rem;font-size:.8rem;color:var(--text-secondary);">
+                <i class="bi bi-check-circle-fill" style="color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                Include a dedicated "Skills" section in your CV
+              </li>
+              <li style="display:flex;gap:.6rem;font-size:.8rem;color:var(--text-secondary);">
+                <i class="bi bi-check-circle-fill" style="color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                Repeat key skills in experience descriptions for higher proficiency
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="ui.js"></script>
+<script src="api.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => requireCurrentUser('candidate'));
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.add('drag-over');
+  }
+  function handleDragLeave(e) {
+    document.getElementById('dropZone').classList.remove('drag-over');
+  }
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') showFilePreview(file);
+  }
+  function handleFileSelect(e) {
+    const file = e.target.files[0];
+    if (file) showFilePreview(file);
+  }
+
+  function showFilePreview(file) {
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB';
+    document.getElementById('filePreview').style.display = '';
+    document.getElementById('dropZone').style.opacity = '.5';
+    document.getElementById('dropZone').style.pointerEvents = 'none';
+  }
+
+  function clearFile() {
+    document.getElementById('filePreview').style.display = 'none';
+    document.getElementById('dropZone').style.opacity = '';
+    document.getElementById('dropZone').style.pointerEvents = '';
+    document.getElementById('fileInput').value = '';
+  }
+
+  function startParsing() {
+    document.getElementById('uploadSection').style.display = 'none';
+    document.getElementById('parsingSection').style.display = '';
+    activateStep(2);
+
+    // Simulate parsing progress
+    const steps = [
+      [15, 'Reading PDF pages…'],
+      [35, 'Extracting text…'],
+      [60, 'Matching skills dictionary…'],
+      [80, 'Calculating proficiency levels…'],
+      [100, 'Done!'],
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i >= steps.length) { clearInterval(interval); showResults(); return; }
+      document.getElementById('parseProgressBar').style.width = steps[i][0] + '%';
+      document.getElementById('parseProgressText').textContent = steps[i][1];
+      i++;
+    }, 600);
+  }
+
+  function showResults() {
+    document.getElementById('parsingSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = '';
+    activateStep(3);
+
+    // Demo extracted skills
+    const extracted = [
+      { name: 'Python',           category: 'programming', proficiency: 9, count: 4 },
+      { name: 'Machine Learning', category: 'data',        proficiency: 9, count: 3 },
+      { name: 'SQL',              category: 'database',    proficiency: 7, count: 2 },
+      { name: 'AWS',              category: 'cloud',       proficiency: 7, count: 1 },
+      { name: 'Git',              category: 'tools',       proficiency: 7, count: 1 },
+      { name: 'Debugging',        category: 'tools',       proficiency: 7, count: 2 },
+      { name: 'React',            category: 'framework',   proficiency: 7, count: 1 },
+    ];
+
+    document.getElementById('skillsFoundCount').textContent = `${extracted.length} skills found in your CV`;
+
+    const container = document.getElementById('extractedSkillsContainer');
+    container.innerHTML = extracted.map(skill => `
+      <div style="display:flex;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border);">
+        <span class="skill-tag ${skill.category}" style="min-width:140px;">${skill.name}</span>
+        <div style="flex:1;">
+          <div class="progress-modern">
+            <div class="bar" style="width:${skill.proficiency * 10}%;"></div>
+          </div>
+        </div>
+        <span style="font-size:.78rem;font-weight:700;color:${skill.proficiency >= 9 ? 'var(--success)' : 'var(--primary)'};min-width:40px;text-align:right;">${skill.proficiency}/10</span>
+        <span style="font-size:.72rem;color:var(--text-muted);min-width:70px;text-align:right;">×${skill.count} mention${skill.count>1?'s':''}</span>
+      </div>
+    `).join('');
+    // Remove last border
+    const rows = container.querySelectorAll('div');
+    if (rows.length) rows[rows.length-1].style.borderBottom = 'none';
+  }
+
+  function activateStep(stepNum) {
+    for (let i = 1; i <= 3; i++) {
+      const el = document.getElementById(`step${i}Indicator`);
+      if (i < stepNum) {
+        el.style.opacity = '1';
+        el.querySelector('div').style.background = 'var(--success)';
+        el.querySelector('span').style.color = 'var(--success)';
+      } else if (i === stepNum) {
+        el.style.opacity = '1';
+        el.querySelector('div').style.background = 'var(--grad-primary)';
+        el.querySelector('span').style.color = 'var(--primary)';
+      } else {
+        el.style.opacity = '.4';
+      }
+    }
+  }
+
+  function resetParser() {
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('uploadSection').style.display = '';
+    clearFile();
+    activateStep(1);
+  }
+
+  function saveToProfile(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving…';
+    // Will call upload_cv.php → cv_parser.py → insert_skills.py
+    setTimeout(() => {
+      btn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Skills Saved!';
+      btn.style.background = 'var(--success)';
+      btn.style.boxShadow = '0 4px 15px rgba(16,185,129,.35)';
+      showToast('Skills saved in the frontend demo.', 'success');
+    }, 1200);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer Dashboard — HireSmart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="sidebar-brand-text text-decoration-none">Hire<span>Smart</span></a>
+    </div>
+
+    <div class="sidebar-section-label">Recruitment</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard_employer.html" class="sidebar-link active">
+        <i class="bi bi-grid-1x2"></i> Dashboard
+      </a>
+      <a href="#" class="sidebar-link" onclick="openPostJob();return false;">
+        <i class="bi bi-plus-circle"></i> Post a Job
+      </a>
+      <a href="jobs.html" class="sidebar-link">
+        <i class="bi bi-briefcase"></i> My Jobs
+      </a>
+      <a href="applications.html" class="sidebar-link">
+        <i class="bi bi-people"></i> Candidates
+      </a>
+    </nav>
+
+    <div class="sidebar-section-label">Account</div>
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link">
+        <i class="bi bi-building"></i> Company Profile
+      </a>
+      <a href="#" class="sidebar-link">
+        <i class="bi bi-gear"></i> Settings
+      </a>
+      <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);">
+        <i class="bi bi-box-arrow-left"></i> Log Out
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">TS</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">TechSphere Inc.</div>
+          <div class="sidebar-user-role">Employer</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+
+    <header class="main-header">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+        <h1 class="main-header-title">Employer Dashboard</h1>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-primary-grad btn-sm" onclick="openPostJob()">
+          <i class="bi bi-plus-lg me-1"></i>Post Job
+        </button>
+        <button class="btn-icon" type="button" title="Notifications"><i class="bi bi-bell"></i></button>
+      </div>
+    </header>
+
+    <div class="main-body">
+
+      <!-- Stats -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3 animate-fade-up">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(79,70,229,.1);">
+              <i class="bi bi-briefcase" style="color:var(--primary);"></i>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-label">Active Jobs</div>
+            <div class="stat-delta" style="color:var(--success);"><i class="bi bi-check-circle me-1"></i>2 filling fast</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 animate-fade-up delay-1">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(6,182,212,.1);">
+              <i class="bi bi-people" style="color:var(--accent);"></i>
+            </div>
+            <div class="stat-value">38</div>
+            <div class="stat-label">Total Applicants</div>
+            <div class="stat-delta" style="color:var(--accent);"><i class="bi bi-arrow-up-short"></i>7 new today</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 animate-fade-up delay-2">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);">
+              <i class="bi bi-person-check" style="color:var(--success);"></i>
+            </div>
+            <div class="stat-value">9</div>
+            <div class="stat-label">Shortlisted</div>
+            <div class="stat-delta" style="color:var(--success);"><i class="bi bi-check me-1"></i>Ready to interview</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 animate-fade-up delay-3">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(245,158,11,.1);">
+              <i class="bi bi-calendar-event" style="color:var(--warning);"></i>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Interviews This Week</div>
+            <div class="stat-delta" style="color:var(--warning);"><i class="bi bi-clock me-1"></i>Next: Tomorrow</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- Top Candidates -->
+        <div class="col-lg-7">
+          <div class="card-modern">
+            <div class="d-flex align-items-center justify-content-between p-4 pb-3">
+              <div>
+                <h6 class="fw-700 mb-0">Top Candidates</h6>
+                <p class="text-muted mb-0" style="font-size:.78rem;">Highest match scores across open roles</p>
+              </div>
+              <a href="applications.html" class="btn btn-soft-primary btn-sm">View All</a>
+            </div>
+            <div class="section-divider" style="margin:0;"></div>
+
+            <div class="table-responsive">
+              <table class="table-modern">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Role Applied</th>
+                    <th>Match</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div style="width:34px;height:34px;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">JS</div>
+                        <div>
+                          <div style="font-weight:600;font-size:.875rem;">Jane Smith</div>
+                          <div style="font-size:.72rem;color:var(--text-muted);">jane@example.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style="font-size:.85rem;">Full Stack Dev</td>
+                    <td>
+                      <span style="font-weight:700;color:var(--success);font-size:.875rem;">88%</span>
+                    </td>
+                    <td><span class="badge-modern badge-shortlisted">Shortlisted</span></td>
+                    <td>
+                      <button type="button" class="btn-soft-primary btn" onclick="candidateAction(this,'Schedule')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
+                        Schedule
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">BJ</div>
+                        <div>
+                          <div style="font-weight:600;font-size:.875rem;">Bob Johnson</div>
+                          <div style="font-size:.72rem;color:var(--text-muted);">bob@example.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style="font-size:.85rem;">Full Stack Dev</td>
+                    <td><span style="font-weight:700;color:var(--success);font-size:.875rem;">81%</span></td>
+                    <td><span class="badge-modern badge-interview">Interview</span></td>
+                    <td>
+                      <button type="button" class="btn-soft-primary btn" onclick="candidateAction(this,'View')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">CD</div>
+                        <div>
+                          <div style="font-weight:600;font-size:.875rem;">Carol Davis</div>
+                          <div style="font-size:.72rem;color:var(--text-muted);">carol@example.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style="font-size:.85rem;">Data Analyst</td>
+                    <td><span style="font-weight:700;color:var(--warning);font-size:.875rem;">67%</span></td>
+                    <td><span class="badge-modern badge-pending">Pending</span></td>
+                    <td>
+                      <button type="button" class="btn-soft-primary btn" onclick="candidateAction(this,'Review')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
+                        Review
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">DW</div>
+                        <div>
+                          <div style="font-weight:600;font-size:.875rem;">Diana Wilson</div>
+                          <div style="font-size:.72rem;color:var(--text-muted);">diana@example.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style="font-size:.85rem;">Backend Engineer</td>
+                    <td><span style="font-weight:700;color:var(--warning);font-size:.875rem;">59%</span></td>
+                    <td><span class="badge-modern badge-pending">Pending</span></td>
+                    <td>
+                      <button type="button" class="btn-soft-danger btn" onclick="candidateAction(this,'Reject')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
+                        Reject
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="col-lg-5 d-flex flex-column gap-4">
+
+          <!-- Active Jobs -->
+          <div class="card-modern">
+            <div class="d-flex align-items-center justify-content-between p-4 pb-3">
+              <h6 class="fw-700 mb-0">Active Job Postings</h6>
+              <button class="btn btn-soft-primary btn-sm" onclick="openPostJob()">
+                <i class="bi bi-plus me-1"></i>New
+              </button>
+            </div>
+            <div class="section-divider" style="margin:0;"></div>
+            <div style="padding:.5rem 0;">
+
+              <div class="px-4 py-3" style="border-bottom:1px solid var(--border);">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="fw-600" style="font-size:.875rem;">Full Stack Developer</span>
+                  <span class="badge-modern badge-open">Open</span>
+                </div>
+                <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">Remote · 18 applicants</div>
+                <div class="progress-modern">
+                  <div class="bar" style="width:72%;background:linear-gradient(90deg,var(--primary),var(--accent));"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1">
+                  <span style="font-size:.7rem;color:var(--text-muted);">18 / 25 limit</span>
+                  <span style="font-size:.7rem;color:var(--primary);font-weight:600;">72% filled</span>
+                </div>
+              </div>
+
+              <div class="px-4 py-3" style="border-bottom:1px solid var(--border);">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="fw-600" style="font-size:.875rem;">Data Analyst</span>
+                  <span class="badge-modern badge-open">Open</span>
+                </div>
+                <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">Hybrid · 9 applicants</div>
+                <div class="progress-modern">
+                  <div class="bar" style="width:36%;"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1">
+                  <span style="font-size:.7rem;color:var(--text-muted);">9 / 25 limit</span>
+                  <span style="font-size:.7rem;color:var(--primary);font-weight:600;">36% filled</span>
+                </div>
+              </div>
+
+              <div class="px-4 py-3">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="fw-600" style="font-size:.875rem;">Backend Engineer</span>
+                  <span class="badge-modern badge-closed">Closed</span>
+                </div>
+                <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">On-site · 11 applicants</div>
+                <div class="progress-modern">
+                  <div class="bar" style="width:100%;background:var(--border-strong);"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Upcoming Interviews -->
+          <div class="card-modern">
+            <div class="p-4 pb-3">
+              <h6 class="fw-700 mb-0">Upcoming Interviews</h6>
+            </div>
+            <div class="section-divider" style="margin:0;"></div>
+            <div class="p-4 d-flex flex-column gap-3">
+              <div style="background:rgba(79,70,229,.06);border-radius:var(--radius-sm);padding:1rem;border-left:3px solid var(--primary);">
+                <div class="fw-600" style="font-size:.875rem;margin-bottom:.25rem;">Bob Johnson — Round 1</div>
+                <div style="font-size:.78rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Tomorrow, 10:00 AM · Online</div>
+              </div>
+              <div style="background:rgba(245,158,11,.06);border-radius:var(--radius-sm);padding:1rem;border-left:3px solid var(--warning);">
+                <div class="fw-600" style="font-size:.875rem;margin-bottom:.25rem;">Jane Smith — Round 2</div>
+                <div style="font-size:.78rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Thu 15 May, 2:00 PM · In-person</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Post Job Modal -->
+<div class="modal fade" id="postJobModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:560px;">
+    <div class="modal-content" style="border-radius:var(--radius-xl);border:none;box-shadow:var(--shadow-xl);">
+      <div class="modal-header" style="border-bottom:1px solid var(--border);padding:1.5rem;">
+        <h5 class="fw-700 mb-0" style="letter-spacing:-.01em;">Post a New Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem;">
+        <div class="form-group">
+          <label class="form-label-custom">Job Title</label>
+          <input type="text" class="form-control-custom" placeholder="e.g. Senior Python Developer">
+        </div>
+        <div class="row g-3">
+          <div class="col-6 form-group">
+            <label class="form-label-custom">Location</label>
+            <input type="text" class="form-control-custom" placeholder="Remote / City">
+          </div>
+          <div class="col-6 form-group">
+            <label class="form-label-custom">Salary Range</label>
+            <input type="text" class="form-control-custom" placeholder="e.g. $50k–$70k">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label-custom">Job Description</label>
+          <textarea class="form-control-custom" rows="3" placeholder="Describe the role and responsibilities..."></textarea>
+        </div>
+        <div class="form-group mb-0">
+          <label class="form-label-custom">Required Skills <span style="color:var(--text-muted);font-weight:400;">(comma-separated)</span></label>
+          <input type="text" class="form-control-custom" id="skillInput" placeholder="Python, React, MySQL, Docker…">
+          <div class="d-flex flex-wrap gap-1 mt-2" id="skillTagsPreview"></div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border);padding:1.25rem 1.5rem;">
+        <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal" style="font-weight:600;">Cancel</button>
+        <button type="button" class="btn btn-primary-grad" onclick="postJobDemo(this)">
+          <i class="bi bi-send me-2"></i>Post Job
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="ui.js"></script>
+<script src="api.js"></script>
+<script>
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+  function openPostJob() {
+    new bootstrap.Modal(document.getElementById('postJobModal')).show();
+  }
+
+  function candidateAction(btn, action) {
+    const row = btn.closest('tr');
+    const name = row.querySelector('td div div div')?.textContent?.trim() || 'candidate';
+    showToast(`${action} action opened for ${name} in the frontend demo.`, 'info');
+  }
+
+  function postJobDemo(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Posting...';
+    const modal = document.getElementById('postJobModal');
+    const fields = modal.querySelectorAll('.form-control-custom');
+
+    apiRequest('post_job.php', {
+      method: 'POST',
+      body: JSON.stringify({
+        job_title: fields[0].value.trim(),
+        location: fields[1].value.trim(),
+        salary_range: fields[2].value.trim(),
+        job_description: fields[3].value.trim(),
+        skills: document.getElementById('skillInput').value.trim(),
+      }),
+    }).then(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-send me-2"></i>Post Job';
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('postJobModal')).hide();
+      showToast('Job posted successfully.', 'success');
+      loadEmployerDashboard();
+    }).catch(error => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-send me-2"></i>Post Job';
+      showToast(error.message, 'warning');
+    });
+  }
+
+  async function loadEmployerDashboard() {
+    const user = await requireCurrentUser('employer');
+    if (!user) return;
+
+    try {
+      const data = await apiRequest('employer_dashboard.php');
+      const values = document.querySelectorAll('.stat-value');
+      values[0].textContent = data.stats.active_jobs;
+      values[1].textContent = data.stats.applicants;
+      values[2].textContent = data.stats.shortlisted;
+      values[3].textContent = data.stats.interviews;
+    } catch (error) {
+      showToast(error.message, 'warning');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadEmployerDashboard);
+
+  // Live skill tag preview in modal
+  document.getElementById('skillInput').addEventListener('input', function() {
+    const preview = document.getElementById('skillTagsPreview');
+    const skills = this.value.split(',').map(s => s.trim()).filter(Boolean);
+    preview.innerHTML = skills.map(s =>
+      `<span class="skill-tag default">${s}</span>`
+    ).join('');
+  });
+</script>
+</body>
+</html>
