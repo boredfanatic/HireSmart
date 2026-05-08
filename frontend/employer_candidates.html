@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidates — HireSmart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="sidebar-brand-text text-decoration-none">Hire<span>Smart</span></a>
+    </div>
+
+    <div class="sidebar-section-label">Recruitment</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard_employer.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i> Dashboard
+      </a>
+      <a href="#" class="sidebar-link" onclick="window.location.href='dashboard_employer.html';return false;">
+        <i class="bi bi-plus-circle"></i> Post a Job
+      </a>
+      <a href="my_jobs.html" class="sidebar-link">
+        <i class="bi bi-briefcase"></i> My Jobs
+      </a>
+      <a href="employer_candidates.html" class="sidebar-link active">
+        <i class="bi bi-people"></i> Candidates
+      </a>
+    </nav>
+
+    <div class="sidebar-section-label">Account</div>
+    <nav class="sidebar-nav">
+      <a href="profile.html" class="sidebar-link">
+        <i class="bi bi-building"></i> Company Profile
+      </a>
+      <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);">
+        <i class="bi bi-box-arrow-left"></i> Log Out
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">TS</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Employer</div>
+          <div class="sidebar-user-role">Employer</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+
+    <header class="main-header">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+        <h1 class="main-header-title">Candidates</h1>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn-icon" type="button" title="Notifications"><i class="bi bi-bell"></i></button>
+      </div>
+    </header>
+
+    <div class="main-body">
+
+      <!-- Filter tabs -->
+      <div class="card-modern p-3 mb-4 animate-fade-up">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div class="tabs-custom">
+            <button class="tab-btn active" onclick="setFilter(this,'all')">All</button>
+            <button class="tab-btn" onclick="setFilter(this,'pending')">Pending</button>
+            <button class="tab-btn" onclick="setFilter(this,'shortlisted')">Shortlisted</button>
+            <button class="tab-btn" onclick="setFilter(this,'interview_scheduled')">Interviews</button>
+            <button class="tab-btn" onclick="setFilter(this,'rejected')">Rejected</button>
+          </div>
+          <div class="input-with-icon" style="max-width:260px;">
+            <i class="bi bi-search"></i>
+            <input type="text" class="form-control-custom" placeholder="Search by name or role…" id="searchInput" oninput="applyFilter()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidates table -->
+      <div class="card-modern animate-fade-up delay-1">
+        <div class="table-responsive">
+          <table class="table-modern">
+            <thead>
+              <tr>
+                <th>Candidate</th>
+                <th>Role Applied</th>
+                <th>Applied</th>
+                <th>Match</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="candidatesBody">
+              <tr><td colspan="6" class="text-center py-4" style="color:var(--text-muted);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Manage Candidate Modal -->
+<div class="modal fade" id="manageCandidateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+    <div class="modal-content" style="border-radius:var(--radius-xl);border:none;box-shadow:var(--shadow-xl);">
+      <div class="modal-header" style="border-bottom:1px solid var(--border);padding:1.5rem;">
+        <div>
+          <h5 class="fw-700 mb-0" id="manageCandidateName" style="letter-spacing:-.01em;">Candidate</h5>
+          <div style="font-size:.78rem;color:var(--text-muted);margin-top:.2rem;" id="manageCandidateMeta"></div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem;">
+        <div class="form-group">
+          <label class="form-label-custom">Application Status</label>
+          <select class="form-control-custom" id="manageStatusSelect" onchange="toggleInterviewSection()">
+            <option value="pending">Pending</option>
+            <option value="shortlisted">Shortlisted</option>
+            <option value="interview_scheduled">Schedule Interview</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div id="interviewSection" style="display:none;">
+          <div class="section-divider" style="margin:.5rem 0 1rem;"></div>
+          <div style="font-size:.8rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.75rem;">Interview Details</div>
+          <div class="form-group">
+            <label class="form-label-custom">Date &amp; Time</label>
+            <input type="datetime-local" class="form-control-custom" id="interviewDateInput">
+          </div>
+          <div class="form-group mb-0">
+            <label class="form-label-custom">Mode</label>
+            <select class="form-control-custom" id="interviewModeSelect">
+              <option value="online">Online</option>
+              <option value="in_person">In Person</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border);padding:1.25rem 1.5rem;">
+        <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal" style="font-weight:600;">Cancel</button>
+        <button type="button" class="btn btn-primary-grad" id="manageSaveBtn" onclick="saveCandidateAction(this)">
+          <i class="bi bi-check-lg me-2"></i>Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="ui.js"></script>
+<script src="api.js"></script>
+<script>
+  let _allCandidates = [];
+  let _activeFilter = 'all';
+  let _currentCandidate = {};
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+
+  function setFilter(btn, filter) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _activeFilter = filter;
+    applyFilter();
+  }
+
+  function applyFilter() {
+    const query = (document.getElementById('searchInput').value || '').toLowerCase();
+    const rows = document.querySelectorAll('#candidatesBody tr[data-status]');
+    let visible = 0;
+    rows.forEach(row => {
+      const statusMatch = _activeFilter === 'all' || row.dataset.status === _activeFilter;
+      const textMatch = !query || row.dataset.search.includes(query);
+      const show = statusMatch && textMatch;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    const existingEmpty = document.getElementById('emptyRow');
+    if (visible === 0 && _allCandidates.length > 0) {
+      if (!existingEmpty) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.id = 'emptyRow';
+        emptyRow.innerHTML = '<td colspan="6" class="text-center py-4" style="color:var(--text-muted);">No candidates match this filter.</td>';
+        document.getElementById('candidatesBody').appendChild(emptyRow);
+      }
+    } else {
+      existingEmpty?.remove();
+    }
+  }
+
+  function candidateRow(c) {
+    const score = Math.round(c.match_score ?? 0);
+    const scoreColor = score >= 75 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--danger)';
+    const applied = c.applied_at ? c.applied_at.slice(0, 10) : '—';
+    return `
+      <tr data-status="${escapeHtml(c.status)}" data-search="${escapeHtml((c.full_name + ' ' + c.job_title + ' ' + c.email).toLowerCase())}">
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">${initials(c.full_name)}</div>
+            <div>
+              <div style="font-weight:600;font-size:.875rem;">${escapeHtml(c.full_name)}</div>
+              <div style="font-size:.72rem;color:var(--text-muted);">${escapeHtml(c.email)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size:.85rem;">${escapeHtml(c.job_title)}</td>
+        <td style="font-size:.82rem;color:var(--text-muted);">${applied}</td>
+        <td><span style="font-weight:700;color:${scoreColor};font-size:.875rem;">${score}%</span></td>
+        <td><span class="badge-modern ${statusClass(c.status)}">${statusLabel(c.status)}</span></td>
+        <td>
+          <button type="button" class="btn-soft-primary btn" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);"
+            data-appid="${c.application_id}"
+            data-name="${escapeHtml(c.full_name)}"
+            data-email="${escapeHtml(c.email)}"
+            data-job="${escapeHtml(c.job_title)}"
+            data-status="${escapeHtml(c.status)}"
+            data-ivid="${c.interview_id ?? ''}"
+            data-ivdate="${escapeHtml(c.interview_date ?? '')}"
+            data-ivmode="${escapeHtml(c.interview_mode ?? 'online')}"
+            onclick="openCandidateModal(this)">
+            Manage
+          </button>
+        </td>
+      </tr>`;
+  }
+
+  function openCandidateModal(btn) {
+    const applicationId = parseInt(btn.dataset.appid, 10);
+    const interviewId   = btn.dataset.ivid ? parseInt(btn.dataset.ivid, 10) : null;
+
+    _currentCandidate = { applicationId, interviewId };
+
+    document.getElementById('manageCandidateName').textContent = btn.dataset.name;
+    document.getElementById('manageCandidateMeta').textContent = `${btn.dataset.email} · ${btn.dataset.job}`;
+
+    document.getElementById('manageStatusSelect').value = btn.dataset.status || 'pending';
+
+    const iv = btn.dataset.ivdate;
+    document.getElementById('interviewDateInput').value = iv ? iv.replace(' ', 'T').slice(0, 16) : '';
+    document.getElementById('interviewModeSelect').value = btn.dataset.ivmode || 'online';
+
+    const saveBtn = document.getElementById('manageSaveBtn');
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = interviewId
+      ? '<i class="bi bi-check-lg me-2"></i>Update'
+      : '<i class="bi bi-check-lg me-2"></i>Save';
+
+    toggleInterviewSection();
+    new bootstrap.Modal(document.getElementById('manageCandidateModal')).show();
+  }
+
+  function toggleInterviewSection() {
+    document.getElementById('interviewSection').style.display =
+      document.getElementById('manageStatusSelect').value === 'interview_scheduled' ? '' : 'none';
+  }
+
+  async function saveCandidateAction(btn) {
+    const status = document.getElementById('manageStatusSelect').value;
+    const { applicationId, interviewId } = _currentCandidate;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving…';
+
+    try {
+      if (status === 'interview_scheduled') {
+        const interviewDate = document.getElementById('interviewDateInput').value;
+        if (!interviewDate) {
+          showToast('Please select an interview date and time.', 'warning');
+          btn.disabled = false;
+          btn.innerHTML = interviewId
+            ? '<i class="bi bi-check-lg me-2"></i>Update'
+            : '<i class="bi bi-check-lg me-2"></i>Save';
+          return;
+        }
+        await apiRequest('schedule_interview.php', {
+          method: 'POST',
+          body: JSON.stringify({
+            application_id: applicationId,
+            interview_id: interviewId || undefined,
+            interview_date: interviewDate.replace('T', ' ') + ':00',
+            interview_mode: document.getElementById('interviewModeSelect').value,
+          }),
+        });
+        showToast('Interview scheduled. Candidate has been notified.', 'success');
+      } else {
+        await apiRequest('update_application_status.php', {
+          method: 'POST',
+          body: JSON.stringify({ application_id: applicationId, status }),
+        });
+        showToast('Status updated. Candidate has been notified.', 'success');
+      }
+
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('manageCandidateModal')).hide();
+      loadCandidates();
+    } catch (err) {
+      showToast(err.message, 'warning');
+      btn.disabled = false;
+      btn.innerHTML = interviewId
+        ? '<i class="bi bi-check-lg me-2"></i>Update'
+        : '<i class="bi bi-check-lg me-2"></i>Save';
+    }
+  }
+
+  async function loadCandidates() {
+    const user = await requireCurrentUser('employer');
+    if (!user) return;
+    try {
+      const data = await apiRequest('get_employer_candidates.php');
+      _allCandidates = data.candidates;
+      document.getElementById('candidatesBody').innerHTML = _allCandidates.length
+        ? _allCandidates.map(candidateRow).join('')
+        : '<tr><td colspan="6" class="text-center py-4" style="color:var(--text-muted);">No candidates yet.</td></tr>';
+      applyFilter();
+    } catch (error) {
+      showToast(error.message, 'warning');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCandidates);
+</script>
+</body>
+</html>

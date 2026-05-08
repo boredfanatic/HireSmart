@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Jobs — HireSmart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="sidebar-brand-text text-decoration-none">Hire<span>Smart</span></a>
+    </div>
+
+    <div class="sidebar-section-label">Recruitment</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard_employer.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i> Dashboard
+      </a>
+      <a href="dashboard_employer.html" class="sidebar-link">
+        <i class="bi bi-plus-circle"></i> Post a Job
+      </a>
+      <a href="my_jobs.html" class="sidebar-link active">
+        <i class="bi bi-briefcase"></i> My Jobs
+      </a>
+      <a href="employer_candidates.html" class="sidebar-link">
+        <i class="bi bi-people"></i> Candidates
+      </a>
+    </nav>
+
+    <div class="sidebar-section-label">Account</div>
+    <nav class="sidebar-nav">
+      <a href="profile.html" class="sidebar-link">
+        <i class="bi bi-building"></i> Company Profile
+      </a>
+      <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);">
+        <i class="bi bi-box-arrow-left"></i> Log Out
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">TS</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">TechSphere Inc.</div>
+          <div class="sidebar-user-role">Employer</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+
+    <header class="main-header">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+        <h1 class="main-header-title">My Jobs</h1>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-primary-grad btn-sm" onclick="window.location.href='dashboard_employer.html'">
+          <i class="bi bi-plus-lg me-1"></i>Post Job
+        </button>
+        <button class="btn-icon" type="button" title="Notifications"><i class="bi bi-bell"></i></button>
+      </div>
+    </header>
+
+    <div class="main-body">
+
+      <!-- Filters -->
+      <div class="card-modern p-3 mb-4 animate-fade-up">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div class="tabs-custom">
+            <button class="tab-btn active" onclick="setFilter(this,'all')">All</button>
+            <button class="tab-btn" onclick="setFilter(this,'open')">Open</button>
+            <button class="tab-btn" onclick="setFilter(this,'closed')">Closed</button>
+          </div>
+          <div style="position:relative;">
+            <i class="bi bi-search" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.85rem;pointer-events:none;"></i>
+            <input type="text" id="jobSearch" class="form-control-custom"
+              placeholder="Search by title…"
+              style="padding-left:2.25rem;width:220px;height:36px;font-size:.85rem;"
+              oninput="renderJobs()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="row g-3 mb-4" id="statsRow">
+        <div class="col-6 col-md-3 animate-fade-up">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(79,70,229,.1);"><i class="bi bi-briefcase" style="color:var(--primary);"></i></div>
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">Total Jobs</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 animate-fade-up delay-1">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(16,185,129,.1);"><i class="bi bi-check-circle" style="color:var(--success);"></i></div>
+            <div class="stat-value" id="statOpen">0</div>
+            <div class="stat-label">Open</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 animate-fade-up delay-2">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(100,116,139,.1);"><i class="bi bi-archive" style="color:var(--text-muted);"></i></div>
+            <div class="stat-value" id="statClosed">0</div>
+            <div class="stat-label">Closed</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 animate-fade-up delay-3">
+          <div class="card-stat">
+            <div class="stat-icon" style="background:rgba(6,182,212,.1);"><i class="bi bi-people" style="color:var(--accent);"></i></div>
+            <div class="stat-value" id="statApplicants">0</div>
+            <div class="stat-label">Total Applicants</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jobs grid -->
+      <div id="jobsGrid" class="row g-3">
+        <div class="col-12 text-center py-5" style="color:var(--text-muted);">Loading your jobs…</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit Job Modal -->
+<div class="modal fade" id="editJobModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:560px;">
+    <div class="modal-content" style="border-radius:var(--radius-xl);border:none;box-shadow:var(--shadow-xl);">
+      <div class="modal-header" style="border-bottom:1px solid var(--border);padding:1.5rem;">
+        <h5 class="fw-700 mb-0" style="letter-spacing:-.01em;">Edit Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem;">
+        <input type="hidden" id="editJobId">
+        <div class="form-group">
+          <label class="form-label-custom">Job Title</label>
+          <input type="text" class="form-control-custom" id="editTitle" placeholder="e.g. Senior Python Developer">
+        </div>
+        <div class="row g-3">
+          <div class="col-6 form-group">
+            <label class="form-label-custom">Location</label>
+            <input type="text" class="form-control-custom" id="editLocation" placeholder="Remote / City">
+          </div>
+          <div class="col-6 form-group">
+            <label class="form-label-custom">Salary Range</label>
+            <input type="text" class="form-control-custom" id="editSalary" placeholder="e.g. $50k–$70k">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label-custom">Status</label>
+          <select class="form-control-custom" id="editStatus">
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label-custom">Job Description</label>
+          <textarea class="form-control-custom" id="editDescription" rows="4" placeholder="Describe the role…"></textarea>
+        </div>
+        <div class="form-group mb-0">
+          <label class="form-label-custom">Max Applications</label>
+          <input type="number" class="form-control-custom" id="editLimit" placeholder="50" min="1">
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border);padding:1.25rem 1.5rem;">
+        <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal" style="font-weight:600;">Cancel</button>
+        <button type="button" class="btn btn-primary-grad" id="editSaveBtn" onclick="saveJobEdit(this)">
+          <i class="bi bi-check-lg me-2"></i>Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="ui.js"></script>
+<script src="api.js"></script>
+<script>
+  let _allJobs = [];
+  let _activeFilter = 'all';
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+
+  function setFilter(btn, status) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _activeFilter = status;
+    renderJobs();
+  }
+
+  function renderJobs() {
+    const query = (document.getElementById('jobSearch').value || '').toLowerCase().trim();
+    const grid  = document.getElementById('jobsGrid');
+
+    const filtered = _allJobs.filter(j => {
+      const matchStatus = _activeFilter === 'all' || j.status === _activeFilter;
+      const matchSearch = !query || j.job_title.toLowerCase().includes(query);
+      return matchStatus && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="col-12 text-center py-5" style="color:var(--text-muted);">
+        <i class="bi bi-briefcase" style="font-size:2rem;display:block;margin-bottom:.75rem;"></i>
+        ${_allJobs.length === 0 ? 'No jobs posted yet. <a href="dashboard_employer.html" style="color:var(--primary);">Post your first job</a>' : 'No jobs match this filter.'}
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(jobCard).join('');
+  }
+
+  function jobCard(job) {
+    const pct   = job.application_limit > 0 ? Math.min(100, Math.round(job.total_applicants / job.application_limit * 100)) : 0;
+    const barColor = pct >= 90 ? 'var(--danger)' : pct >= 70 ? 'var(--warning)' : 'var(--success)';
+    const statusBadge = job.status === 'open'
+      ? '<span class="badge-modern badge-shortlisted" style="font-size:.72rem;">Open</span>'
+      : '<span class="badge-modern badge-pending" style="font-size:.72rem;background:rgba(100,116,139,.12);color:#64748b;">Closed</span>';
+    const skills = job.skills.slice(0, 4).map(s =>
+      `<span class="skill-tag ${s.category}">${escapeHtml(s.name)}</span>`
+    ).join('');
+    const moreSkills = job.skills.length > 4
+      ? `<span class="skill-tag" style="background:rgba(100,116,139,.08);color:var(--text-muted);">+${job.skills.length - 4} more</span>` : '';
+
+    return `
+      <div class="col-12 col-md-6 col-xl-4 animate-fade-up">
+        <div class="card-modern h-100 d-flex flex-column" style="padding:0;">
+          <div style="padding:1.25rem 1.25rem .75rem;">
+            <div class="d-flex align-items-start justify-content-between gap-2 mb-1">
+              <div class="fw-700" style="font-size:1rem;line-height:1.3;">${escapeHtml(job.job_title)}</div>
+              ${statusBadge}
+            </div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.75rem;">
+              ${escapeHtml(job.company_name)}
+              ${job.location ? ' · ' + escapeHtml(job.location) : ''}
+              ${job.salary_range ? ' · ' + escapeHtml(job.salary_range) : ''}
+            </div>
+            <div class="d-flex flex-wrap gap-1 mb-2">${skills}${moreSkills}</div>
+          </div>
+
+          <div style="padding:.75rem 1.25rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(0,0,0,.02);">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span style="font-size:.75rem;font-weight:600;color:var(--text-muted);">Applicants</span>
+              <span style="font-size:.8rem;font-weight:700;color:var(--text);">${job.total_applicants} / ${job.application_limit}</span>
+            </div>
+            <div style="background:var(--border);border-radius:99px;height:6px;overflow:hidden;">
+              <div style="width:${pct}%;height:100%;background:${barColor};border-radius:99px;transition:width .4s;"></div>
+            </div>
+            <div style="font-size:.7rem;color:var(--text-muted);margin-top:.3rem;">${pct}% filled</div>
+          </div>
+
+          <div style="padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:auto;">
+            <span style="font-size:.72rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>${formatDate(job.created_at)}</span>
+            <div class="d-flex gap-2">
+              <a href="employer_candidates.html" class="btn btn-soft-primary btn-sm" style="font-size:.75rem;padding:.3rem .75rem;">
+                <i class="bi bi-people me-1"></i>Candidates
+              </a>
+              <button class="btn btn-soft-primary btn-sm" style="font-size:.75rem;padding:.3rem .75rem;"
+                onclick='openEditModal(${job.job_id})'>
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function formatDate(dt) {
+    if (!dt) return '';
+    return new Date(dt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function openEditModal(jobId) {
+    const job = _allJobs.find(j => j.job_id === jobId);
+    if (!job) return;
+
+    document.getElementById('editJobId').value        = job.job_id;
+    document.getElementById('editTitle').value        = job.job_title;
+    document.getElementById('editLocation').value     = job.location      || '';
+    document.getElementById('editSalary').value       = job.salary_range  || '';
+    document.getElementById('editStatus').value       = job.status;
+    document.getElementById('editDescription').value  = job.job_description || '';
+    document.getElementById('editLimit').value        = job.application_limit;
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('editJobModal')).show();
+  }
+
+  function saveJobEdit(btn) {
+    const jobId = parseInt(document.getElementById('editJobId').value, 10);
+    const payload = {
+      job_id:            jobId,
+      job_title:         document.getElementById('editTitle').value.trim(),
+      location:          document.getElementById('editLocation').value.trim(),
+      salary_range:      document.getElementById('editSalary').value.trim(),
+      status:            document.getElementById('editStatus').value,
+      job_description:   document.getElementById('editDescription').value.trim(),
+      application_limit: parseInt(document.getElementById('editLimit').value, 10) || 50,
+    };
+
+    if (!payload.job_title) {
+      showToast('Job title is required.', 'warning');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving…';
+
+    apiRequest('update_job.php', { method: 'POST', body: JSON.stringify(payload) })
+      .then(() => {
+        // Update local cache
+        const idx = _allJobs.findIndex(j => j.job_id === jobId);
+        if (idx !== -1) {
+          Object.assign(_allJobs[idx], payload);
+        }
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('editJobModal')).hide();
+        updateStats();
+        renderJobs();
+        showToast('Job updated successfully.', 'success');
+      })
+      .catch(err => {
+        showToast(err.message || 'Failed to save.', 'warning');
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Save Changes';
+      });
+  }
+
+  function updateStats() {
+    const open  = _allJobs.filter(j => j.status === 'open').length;
+    const total = _allJobs.reduce((s, j) => s + j.total_applicants, 0);
+    document.getElementById('statTotal').textContent     = _allJobs.length;
+    document.getElementById('statOpen').textContent      = open;
+    document.getElementById('statClosed').textContent    = _allJobs.length - open;
+    document.getElementById('statApplicants').textContent = total;
+  }
+
+  async function loadMyJobs() {
+    await requireCurrentUser('employer');
+    try {
+      const data = await apiRequest('get_my_jobs.php');
+      _allJobs = data.jobs || [];
+      updateStats();
+      renderJobs();
+    } catch (err) {
+      document.getElementById('jobsGrid').innerHTML =
+        `<div class="col-12 text-center py-5" style="color:var(--danger);">${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadMyJobs);
+</script>
+</body>
+</html>

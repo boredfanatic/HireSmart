@@ -29,7 +29,7 @@
     </nav>
     <div class="sidebar-section-label">Account</div>
     <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
+      <a href="profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
       <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);"><i class="bi bi-box-arrow-left"></i> Log Out</a>
     </nav>
     <div class="sidebar-footer">
@@ -102,132 +102,7 @@
         <div class="section-divider" style="margin:0;"></div>
 
         <div id="applicationsList">
-
-          <!-- Application row -->
-          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="shortlisted">
-            <div class="company-logo-placeholder flex-shrink-0">TS</div>
-            <div style="flex:1;min-width:0;">
-              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
-                <div>
-                  <div class="fw-700" style="font-size:.95rem;">Full Stack Developer</div>
-                  <div style="font-size:.78rem;color:var(--text-muted);">TechSphere Inc. · Remote</div>
-                </div>
-                <span class="badge-modern badge-shortlisted">Shortlisted</span>
-              </div>
-              <div class="d-flex flex-wrap gap-1 my-2">
-                <span class="skill-tag programming">Python</span>
-                <span class="skill-tag framework">React</span>
-                <span class="skill-tag database">MySQL</span>
-              </div>
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <div class="d-flex align-items-center gap-3">
-                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 3 May 2025</span>
-                  <span style="font-size:.75rem;font-weight:700;color:var(--success);">Match: 88%</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="interview_scheduled">
-            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#10b981,#059669);">IN</div>
-            <div style="flex:1;min-width:0;">
-              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
-                <div>
-                  <div class="fw-700" style="font-size:.95rem;">ML Engineer</div>
-                  <div style="font-size:.78rem;color:var(--text-muted);">InnoTech · Remote</div>
-                </div>
-                <span class="badge-modern badge-interview">Interview Scheduled</span>
-              </div>
-              <div style="background:rgba(79,70,229,.06);border-radius:var(--radius-sm);padding:.75rem;margin:.6rem 0;border-left:3px solid var(--primary);">
-                <div style="font-size:.8rem;font-weight:600;color:var(--primary);"><i class="bi bi-calendar-check me-2"></i>Round 1 — Thu 15 May, 2:00 PM · Online</div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <div class="d-flex align-items-center gap-3">
-                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 29 Apr 2025</span>
-                  <span style="font-size:.75rem;font-weight:700;color:var(--success);">Match: 79%</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="pending">
-            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">CV</div>
-            <div style="flex:1;min-width:0;">
-              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
-                <div>
-                  <div class="fw-700" style="font-size:.95rem;">Data Analyst</div>
-                  <div style="font-size:.78rem;color:var(--text-muted);">CloudVision · Hybrid · Bangalore</div>
-                </div>
-                <span class="badge-modern badge-pending">Pending Review</span>
-              </div>
-              <div class="d-flex flex-wrap gap-1 my-2">
-                <span class="skill-tag data">Python</span>
-                <span class="skill-tag data">Tableau</span>
-                <span class="skill-tag database">SQL</span>
-              </div>
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <div class="d-flex align-items-center gap-3">
-                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 1 May 2025</span>
-                  <span style="font-size:.75rem;font-weight:700;color:var(--warning);">Match: 63%</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
-                  <button class="btn btn-soft-danger btn-sm" onclick="withdrawApp(this)">Withdraw</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="rejected">
-            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#94a3b8,#64748b);">NX</div>
-            <div style="flex:1;min-width:0;opacity:.65;">
-              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
-                <div>
-                  <div class="fw-700" style="font-size:.95rem;">Frontend Developer</div>
-                  <div style="font-size:.78rem;color:var(--text-muted);">NexaCorps · On-site · Delhi</div>
-                </div>
-                <span class="badge-modern badge-rejected">Not Selected</span>
-              </div>
-              <div class="d-flex align-items-center gap-3 mt-2">
-                <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 18 Apr 2025</span>
-                <span style="font-size:.75rem;font-weight:700;color:var(--danger);">Match: 38%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 d-flex align-items-start gap-3" data-status="pending">
-            <div class="company-logo-placeholder flex-shrink-0" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">DD</div>
-            <div style="flex:1;min-width:0;">
-              <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
-                <div>
-                  <div class="fw-700" style="font-size:.95rem;">Backend Engineer</div>
-                  <div style="font-size:.78rem;color:var(--text-muted);">DataDrive · On-site · Mumbai</div>
-                </div>
-                <span class="badge-modern badge-pending">Pending Review</span>
-              </div>
-              <div class="d-flex flex-wrap gap-1 my-2">
-                <span class="skill-tag programming">Java</span>
-                <span class="skill-tag framework">Spring Boot</span>
-              </div>
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <div class="d-flex align-items-center gap-3">
-                  <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied 28 Apr 2025</span>
-                  <span style="font-size:.75rem;font-weight:700;color:var(--danger);">Match: 43%</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
-                  <button class="btn btn-soft-danger btn-sm" onclick="withdrawApp(this)">Withdraw</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <div class="p-4 text-center" style="color:var(--text-muted);">Loading applications…</div>
         </div>
       </div>
     </div>
@@ -238,6 +113,9 @@
 <script src="ui.js"></script>
 <script src="api.js"></script>
 <script>
+  let _allApplications = [];
+  let _activeStatus = 'all';
+
   function openSidebar() {
     document.getElementById('sidebar').classList.add('open');
     document.getElementById('sidebarOverlay').classList.add('show');
@@ -248,61 +126,59 @@
   }
 
   function applyStatusFilter(status) {
-    const rows = document.querySelectorAll('#applicationsList [data-status]');
-    rows.forEach(row => {
-      if (status === 'all') {
-        row.style.display = '';
-      } else if (status === 'interview') {
-        row.style.display = row.dataset.status === 'interview_scheduled' ? '' : 'none';
-      } else {
-        row.style.display = row.dataset.status === status ? '' : 'none';
-      }
+    _activeStatus = status;
+
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      const text = b.textContent.trim().toLowerCase();
+      b.classList.toggle('active',
+        (status === 'all' && text === 'all') ||
+        (status === 'pending' && text === 'pending') ||
+        (status === 'shortlisted' && text === 'shortlisted') ||
+        (status === 'interview' && text === 'interviews')
+      );
     });
+
+    const filtered = status === 'all'
+      ? _allApplications
+      : status === 'interview'
+        ? _allApplications.filter(a => a.status === 'interview_scheduled')
+        : _allApplications.filter(a => a.status === status);
+
+    if (_allApplications.length === 0) return;
+
+    document.getElementById('applicationsList').innerHTML = filtered.length
+      ? filtered.map(applicationRow).join('')
+      : '<div class="p-4 text-center" style="color:var(--text-muted);"><i class="bi bi-inbox me-2"></i>No applications in this category.</div>';
   }
 
   function setStatusFilter(btn, status) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     applyStatusFilter(status);
   }
 
   function filterByStatus(status) {
-    const normalized = status === 'interview_scheduled' ? 'interview' : status;
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      const text = btn.textContent.trim().toLowerCase();
-      btn.classList.toggle('active',
-        (normalized === 'all' && text === 'all') ||
-        (normalized === 'pending' && text === 'pending') ||
-        (normalized === 'shortlisted' && text === 'shortlisted') ||
-        (normalized === 'interview' && text === 'interviews')
-      );
-    });
-    applyStatusFilter(normalized);
+    applyStatusFilter(status === 'interview_scheduled' ? 'interview' : status);
   }
 
-  function viewDetails(btn) {
-    const role = btn.closest('[data-status]').querySelector('.fw-700')?.textContent?.trim() || 'application';
-    showToast(`Showing demo details for ${role}.`, 'info');
-  }
-
-  function withdrawApp(btn) {
-    if (confirm('Withdraw this application?')) {
-      btn.closest('[data-status]').style.opacity = '.4';
-      btn.closest('[data-status]').dataset.status = 'withdrawn';
-      btn.remove();
-      showToast('Application withdrawn in the frontend demo.', 'success');
-    }
+  function withdrawApp(appId) {
+    if (!confirm('Withdraw this application?')) return;
+    _allApplications = _allApplications.filter(a => a.application_id !== appId);
+    updateApplicationCounts(_allApplications);
+    applyStatusFilter(_activeStatus);
+    showToast('Application withdrawn.', 'success');
   }
 
   function applicationRow(app) {
     const score = app.match_score !== null ? Math.round(app.match_score) : 0;
+    const scoreColor = score >= 70 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--danger)';
     const interview = app.next_interview_date ? `
       <div style="background:rgba(79,70,229,.06);border-radius:var(--radius-sm);padding:.75rem;margin:.6rem 0;border-left:3px solid var(--primary);">
         <div style="font-size:.8rem;font-weight:600;color:var(--primary);"><i class="bi bi-calendar-check me-2"></i>${escapeHtml(app.next_interview_date)} · ${escapeHtml(app.next_interview_mode || '')}</div>
       </div>` : '';
+    const withdrawBtn = app.status === 'pending' ? `
+      <button class="btn btn-soft-danger btn-sm" onclick="withdrawApp(${app.application_id})">Withdraw</button>` : '';
 
     return `
-      <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-status="${escapeHtml(app.status)}">
+      <div class="p-4 d-flex align-items-start gap-3" style="border-bottom:1px solid var(--border);" data-app-id="${app.application_id}">
         <div class="company-logo-placeholder flex-shrink-0">${initials(app.company_name)}</div>
         <div style="flex:1;min-width:0;">
           <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
@@ -314,14 +190,12 @@
           </div>
           ${interview}
           <div class="d-flex flex-wrap gap-1 my-2">${skillTags(app.skills)}</div>
-          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-1">
             <div class="d-flex align-items-center gap-3">
               <span style="font-size:.75rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>Applied ${escapeHtml(app.applied_at)}</span>
-              <span style="font-size:.75rem;font-weight:700;color:var(--success);">Match: ${score}%</span>
+              <span style="font-size:.75rem;font-weight:700;color:${scoreColor};">Match: ${score}%</span>
             </div>
-            <div class="d-flex gap-2">
-              <button class="btn btn-soft-primary btn-sm" onclick="viewDetails(this)">View Details</button>
-            </div>
+            ${withdrawBtn}
           </div>
         </div>
       </div>`;
@@ -330,11 +204,10 @@
   function updateApplicationCounts(applications) {
     const counts = {
       all: applications.length,
-      pending: applications.filter(app => app.status === 'pending').length,
-      shortlisted: applications.filter(app => app.status === 'shortlisted').length,
-      interview_scheduled: applications.filter(app => app.status === 'interview_scheduled').length,
+      pending: applications.filter(a => a.status === 'pending').length,
+      shortlisted: applications.filter(a => a.status === 'shortlisted').length,
+      interview_scheduled: applications.filter(a => a.status === 'interview_scheduled').length,
     };
-
     document.querySelector('#tab-all div').textContent = counts.all;
     document.querySelector('#tab-pending div').textContent = counts.pending;
     document.querySelector('#tab-shortlisted div').textContent = counts.shortlisted;
@@ -345,16 +218,22 @@
     await requireCurrentUser('candidate');
     try {
       const data = await apiRequest('get_applications.php');
-      document.getElementById('applicationsList').innerHTML = data.applications.length
-        ? data.applications.map(applicationRow).join('')
-        : '<div class="empty-state"><i class="bi bi-inbox"></i>No applications yet.</div>';
-      updateApplicationCounts(data.applications);
+      _allApplications = data.applications || [];
+      updateApplicationCounts(_allApplications);
+      if (_allApplications.length === 0) {
+        document.getElementById('applicationsList').innerHTML =
+          '<div class="empty-state"><i class="bi bi-inbox"></i>No applications yet.</div>';
+        return;
+      }
+      applyStatusFilter(_activeStatus);
     } catch (error) {
       showToast(error.message, 'warning');
     }
   }
 
-  document.addEventListener('DOMContentLoaded', loadApplications);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadApplications();
+  });
 </script>
 </body>
 </html>

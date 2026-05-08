@@ -96,6 +96,27 @@ function set_user_session(array $user): void
     $_SESSION['user'] = $user;
 }
 
+function ensure_notifications_table(PDO $pdo): void
+{
+    $pdo->exec(
+        "CREATE TABLE IF NOT EXISTS Notifications (
+            notification_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id         INT          NOT NULL,
+            message         TEXT         NOT NULL,
+            is_read         TINYINT(1)   NOT NULL DEFAULT 0,
+            created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_notif_user (user_id, is_read)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+    );
+}
+
+function create_notification(PDO $pdo, int $userId, string $message): void
+{
+    ensure_notifications_table($pdo);
+    $stmt = $pdo->prepare('INSERT INTO Notifications (user_id, message) VALUES (?, ?)');
+    $stmt->execute([$userId, $message]);
+}
+
 function initials(?string $name): string
 {
     $name = trim((string) $name);

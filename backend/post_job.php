@@ -18,6 +18,9 @@ $location = trim((string) ($input['location'] ?? ''));
 $salary = trim((string) ($input['salary_range'] ?? ''));
 $description = trim((string) ($input['job_description'] ?? ''));
 $skillsRaw = (string) ($input['skills'] ?? '');
+$appLimit = isset($input['application_limit']) && (int) $input['application_limit'] > 0
+    ? (int) $input['application_limit']
+    : 50;
 
 if ($title === '') {
     fail('Job title is required.');
@@ -28,8 +31,8 @@ try {
     $pdo->beginTransaction();
 
     $stmt = $pdo->prepare(
-        "INSERT INTO Jobs (employer_id, job_title, job_description, location, salary_range)
-         VALUES (?, ?, ?, ?, ?)"
+        "INSERT INTO Jobs (employer_id, job_title, job_description, location, salary_range, application_limit)
+         VALUES (?, ?, ?, ?, ?, ?)"
     );
     $stmt->execute([
         (int) $user['employer_id'],
@@ -37,6 +40,7 @@ try {
         $description !== '' ? $description : null,
         $location !== '' ? $location : null,
         $salary !== '' ? $salary : null,
+        $appLimit,
     ]);
     $jobId = (int) $pdo->lastInsertId();
 

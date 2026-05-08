@@ -51,6 +51,7 @@ try {
             'location' => $row['location'],
             'salary_range' => $row['salary_range'],
             'status' => $row['status'],
+            'created_at' => $row['created_at'],
             'company_name' => $row['company_name'],
             'total_applicants' => (int) $row['total_applicants'],
             'skills' => $skills,

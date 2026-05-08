@@ -33,7 +33,10 @@ try {
 
     $stmt = $pdo->prepare(
         "SELECT a.application_id, a.match_score, a.status, j.job_title,
-                c.full_name, u.email
+                c.full_name, u.email, c.user_id AS candidate_user_id,
+                (SELECT i.interview_id   FROM Interviews i WHERE i.application_id = a.application_id ORDER BY i.created_at DESC LIMIT 1) AS interview_id,
+                (SELECT i.interview_date FROM Interviews i WHERE i.application_id = a.application_id ORDER BY i.created_at DESC LIMIT 1) AS interview_date,
+                (SELECT i.interview_mode FROM Interviews i WHERE i.application_id = a.application_id ORDER BY i.created_at DESC LIMIT 1) AS interview_mode
          FROM Applications a
          INNER JOIN Jobs j ON j.job_id = a.job_id
          INNER JOIN Candidates c ON c.candidate_id = a.candidate_id

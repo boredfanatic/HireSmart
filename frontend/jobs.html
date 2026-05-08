@@ -20,18 +20,20 @@
     <div class="sidebar-brand">
       <a href="index.html" class="sidebar-brand-text text-decoration-none">Hire<span>Smart</span></a>
     </div>
-    <div class="sidebar-section-label">Main</div>
-    <nav class="sidebar-nav">
-      <a href="dashboard_candidate.html" class="sidebar-link"><i class="bi bi-grid-1x2"></i> Dashboard</a>
-      <a href="jobs.html" class="sidebar-link active"><i class="bi bi-briefcase"></i> Browse Jobs</a>
-      <a href="applications.html" class="sidebar-link"><i class="bi bi-send"></i> My Applications</a>
-      <a href="parse_cv.html" class="sidebar-link"><i class="bi bi-file-earmark-person"></i> Parse CV</a>
-    </nav>
-    <div class="sidebar-section-label">Account</div>
-    <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
-      <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);"><i class="bi bi-box-arrow-left"></i> Log Out</a>
-    </nav>
+    <div id="sidebarNavArea">
+      <div class="sidebar-section-label">Main</div>
+      <nav class="sidebar-nav">
+        <a href="dashboard_candidate.html" class="sidebar-link"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+        <a href="jobs.html" class="sidebar-link active"><i class="bi bi-briefcase"></i> Browse Jobs</a>
+        <a href="applications.html" class="sidebar-link"><i class="bi bi-send"></i> My Applications</a>
+        <a href="parse_cv.html" class="sidebar-link"><i class="bi bi-file-earmark-person"></i> Parse CV</a>
+      </nav>
+      <div class="sidebar-section-label">Account</div>
+      <nav class="sidebar-nav">
+        <a href="profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
+        <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);"><i class="bi bi-box-arrow-left"></i> Log Out</a>
+      </nav>
+    </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="sidebar-avatar">JS</div>
@@ -100,22 +102,17 @@
         <div class="col-lg-3 d-none d-lg-block">
           <div class="filter-panel">
             <h6>Skill Category</h6>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Programming</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Data Science</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Cloud &amp; DevOps</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Frameworks</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Databases</label>
-
-            <h6 class="mt-4">Experience Level</h6>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Junior (0–2 yrs)</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Mid (2–5 yrs)</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Senior (5+ yrs)</label>
+            <label class="filter-check"><input type="checkbox" data-cat="programming" onchange="filterJobs()"> Programming</label>
+            <label class="filter-check"><input type="checkbox" data-cat="data" onchange="filterJobs()"> Data Science</label>
+            <label class="filter-check"><input type="checkbox" data-cat="cloud" onchange="filterJobs()"> Cloud &amp; DevOps</label>
+            <label class="filter-check"><input type="checkbox" data-cat="framework" onchange="filterJobs()"> Frameworks</label>
+            <label class="filter-check"><input type="checkbox" data-cat="database" onchange="filterJobs()"> Databases</label>
 
             <h6 class="mt-4">Salary Range</h6>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Under $40k</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> $40k – $70k</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> $70k – $100k</label>
-            <label class="filter-check"><input type="checkbox" onchange="filterJobs()"> Above $100k</label>
+            <label class="filter-check"><input type="checkbox" data-sal="under40" onchange="filterJobs()"> Under $40k</label>
+            <label class="filter-check"><input type="checkbox" data-sal="40to70" onchange="filterJobs()"> $40k – $70k</label>
+            <label class="filter-check"><input type="checkbox" data-sal="70to100" onchange="filterJobs()"> $70k – $100k</label>
+            <label class="filter-check"><input type="checkbox" data-sal="over100" onchange="filterJobs()"> Above $100k</label>
           </div>
         </div>
 
@@ -308,6 +305,10 @@
   let activeTab = 'all';
   let loadedJobs = [];
 
+  function openPostJob() {
+    window.location.href = 'dashboard_employer.html';
+  }
+
   function openSidebar() {
     document.getElementById('sidebar').classList.add('open');
     document.getElementById('sidebarOverlay').classList.add('show');
@@ -324,29 +325,98 @@
     filterJobs();
   }
 
+  function parseSalaryMax(s) {
+    if (!s) return 0;
+    const nums = s.match(/\d+(?:\.\d+)?/g);
+    if (!nums) return 0;
+    const maxVal = Math.max(...nums.map(Number));
+    return s.toLowerCase().includes('k') ? maxVal : maxVal / 1000;
+  }
+
+  function normalizeLocation(s) {
+    return s.toLowerCase().replace(/[-\s]/g, '');
+  }
+
   function filterJobs() {
     const query    = document.getElementById('searchInput').value.toLowerCase();
-    const location = document.getElementById('locationFilter').value.toLowerCase();
-    const cards    = document.querySelectorAll('.job-card');
+    const location = document.getElementById('locationFilter').value;
+    const normLoc  = normalizeLocation(location);
+
+    const checkedCats = Array.from(
+      document.querySelectorAll('.filter-check input[data-cat]:checked')
+    ).map(cb => cb.dataset.cat);
+
+    const checkedSal = Array.from(
+      document.querySelectorAll('.filter-check input[data-sal]:checked')
+    ).map(cb => cb.dataset.sal);
+
+    const cards = document.querySelectorAll('.job-card');
     let count = 0;
     cards.forEach(card => {
-      const title = card.dataset.title.toLowerCase();
-      const loc   = card.dataset.location.toLowerCase();
-      const matchSearch   = !query    || title.includes(query);
-      const matchLocation = !location || loc.includes(location);
+      const title   = (card.dataset.title || '').toLowerCase();
+      const company = (card.dataset.company || '').toLowerCase();
+      const loc     = normalizeLocation(card.dataset.location || '');
+      const salMax  = parseFloat(card.dataset.salaryMax) || 0;
+
+      const matchSearch   = !query || title.includes(query) || company.includes(query);
+      const matchLocation = !normLoc || loc.includes(normLoc);
       const matchTab = activeTab === 'all'
         || (activeTab === 'matched' && Number(card.dataset.match || 0) >= 75)
         || (activeTab === 'saved' && card.dataset.saved === 'true');
-      const show = matchSearch && matchLocation && matchTab;
+
+      let matchCat = checkedCats.length === 0;
+      if (!matchCat) {
+        const cardCats = Array.from(card.querySelectorAll('.skill-tag'))
+          .map(el => Array.from(el.classList).find(c => c !== 'skill-tag') || '');
+        matchCat = checkedCats.some(cat => cardCats.includes(cat));
+      }
+
+      let matchSal = checkedSal.length === 0;
+      if (!matchSal && salMax > 0) {
+        matchSal = checkedSal.some(range => {
+          if (range === 'under40') return salMax <= 40;
+          if (range === '40to70')  return salMax > 40 && salMax <= 70;
+          if (range === '70to100') return salMax > 70 && salMax <= 100;
+          if (range === 'over100') return salMax > 100;
+          return false;
+        });
+      }
+
+      const show = matchSearch && matchLocation && matchTab && matchCat && matchSal;
       card.style.display = show ? '' : 'none';
       if (show) count++;
     });
+
+    applySortToContainer();
     document.getElementById('resultsCount').innerHTML = `Showing <strong>${count}</strong> job${count !== 1 ? 's' : ''}`;
+  }
+
+  function applySortToContainer() {
+    const sortVal = document.getElementById('sortFilter').value;
+    const container = document.getElementById('jobsContainer');
+    const cards = Array.from(container.querySelectorAll('.job-card'));
+
+    cards.sort((a, b) => {
+      if (sortVal === 'Newest First') {
+        const da = a.dataset.date || '';
+        const db = b.dataset.date || '';
+        return db.localeCompare(da);
+      }
+      if (sortVal === 'Salary: High to Low') {
+        return (parseFloat(b.dataset.salaryMax) || 0) - (parseFloat(a.dataset.salaryMax) || 0);
+      }
+      // Best Match — restore original API order
+      return parseInt(a.dataset.order || 0) - parseInt(b.dataset.order || 0);
+    });
+
+    cards.forEach(card => container.appendChild(card));
   }
 
   function clearFilters() {
     document.getElementById('searchInput').value = '';
     document.getElementById('locationFilter').value = '';
+    document.getElementById('sortFilter').value = 'Best Match';
+    document.querySelectorAll('.filter-check input[type="checkbox"]').forEach(cb => { cb.checked = false; });
     filterJobs();
   }
 
@@ -382,15 +452,25 @@
     });
   }
 
-  function jobCard(job) {
-    const score = Math.round(job.match_score ?? 0);
+  function jobCard(job, order) {
+    const score   = Math.round(job.match_score ?? 0);
     const ringClass = score >= 75 ? 'match-ring-high' : score >= 50 ? 'match-ring-mid' : 'match-ring-low';
-    const dash = Math.round((score / 100) * 132);
-    const companyInitials = initials(job.company_name);
+    const dash    = Math.round((score / 100) * 132);
+    const salMax  = parseSalaryMax(job.salary_range);
     return `
-      <div class="job-card animate-fade-up" data-job-id="${job.job_id}" data-location="${escapeHtml(job.location || '')}" data-title="${escapeHtml(job.job_title)}" data-match="${score}" data-saved="false" data-applied="${job.already_applied ? 'true' : 'false'}">
+      <div class="job-card animate-fade-up"
+        data-job-id="${job.job_id}"
+        data-location="${escapeHtml(job.location || '')}"
+        data-title="${escapeHtml(job.job_title)}"
+        data-company="${escapeHtml(job.company_name)}"
+        data-match="${score}"
+        data-salary-max="${salMax}"
+        data-date="${escapeHtml(job.created_at || '')}"
+        data-order="${order}"
+        data-saved="false"
+        data-applied="${job.already_applied ? 'true' : 'false'}">
         <div class="d-flex align-items-start gap-3">
-          <div class="company-logo-placeholder">${companyInitials}</div>
+          <div class="company-logo-placeholder">${initials(job.company_name)}</div>
           <div style="flex:1;min-width:0;">
             <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
               <div>
@@ -425,11 +505,18 @@
   }
 
   async function loadJobs() {
-    await requireCurrentUser('candidate');
+    const user = await requireCurrentUser();
+    if (!user) return;
+
+    if (user.user_type === 'employer') {
+      window.location.replace('my_jobs.html');
+      return;
+    }
+
     try {
       const data = await apiRequest('get_jobs.php');
       loadedJobs = data.jobs;
-      document.getElementById('jobsContainer').innerHTML = loadedJobs.map(jobCard).join('');
+      document.getElementById('jobsContainer').innerHTML = loadedJobs.map((j, i) => jobCard(j, i)).join('');
       filterJobs();
     } catch (error) {
       showToast(error.message, 'warning');

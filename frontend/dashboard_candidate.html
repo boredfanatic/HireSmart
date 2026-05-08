@@ -39,11 +39,8 @@
 
     <div class="sidebar-section-label">Account</div>
     <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link">
+      <a href="profile.html" class="sidebar-link">
         <i class="bi bi-person-circle"></i> My Profile
-      </a>
-      <a href="#" class="sidebar-link">
-        <i class="bi bi-gear"></i> Settings
       </a>
       <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);">
         <i class="bi bi-box-arrow-left"></i> Log Out
@@ -262,31 +259,8 @@
               <a href="applications.html" class="btn btn-soft-primary btn-sm">See All</a>
             </div>
             <div class="section-divider" style="margin:0;"></div>
-            <div style="padding:.5rem 0;">
-              <div class="d-flex align-items-center gap-3 px-4 py-2">
-                <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#818cf8,#a78bfa);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.7rem;flex-shrink:0;">TS</div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Full Stack Developer</div>
-                  <div style="font-size:.72rem;color:var(--text-muted);">2 days ago</div>
-                </div>
-                <span class="badge-modern badge-shortlisted">Shortlisted</span>
-              </div>
-              <div class="d-flex align-items-center gap-3 px-4 py-2">
-                <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.7rem;flex-shrink:0;">CV</div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Data Analyst</div>
-                  <div style="font-size:.72rem;color:var(--text-muted);">5 days ago</div>
-                </div>
-                <span class="badge-modern badge-pending">Pending</span>
-              </div>
-              <div class="d-flex align-items-center gap-3 px-4 py-2">
-                <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.7rem;flex-shrink:0;">IN</div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">ML Engineer</div>
-                  <div style="font-size:.72rem;color:var(--text-muted);">1 week ago</div>
-                </div>
-                <span class="badge-modern badge-interview">Interview</span>
-              </div>
+            <div style="padding:.5rem 0;" id="recentApplicationsList">
+              <div class="px-4 py-3" style="color:var(--text-muted);font-size:.875rem;">Loading…</div>
             </div>
           </div>
 
@@ -336,6 +310,18 @@
     document.getElementById('sidebarOverlay').classList.remove('show');
   }
 
+  function recentAppRow(app) {
+    return `
+      <div class="d-flex align-items-center gap-3 px-4 py-2">
+        <div style="width:34px;height:34px;border-radius:8px;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.7rem;flex-shrink:0;">${initials(app.company_name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(app.job_title)}</div>
+          <div style="font-size:.72rem;color:var(--text-muted);">${escapeHtml(app.company_name)}</div>
+        </div>
+        <span class="badge-modern ${statusClass(app.status)}">${statusLabel(app.status)}</span>
+      </div>`;
+  }
+
   function dashboardMatchRow(job) {
     const score = Math.round(job.match_score || 0);
     const ringClass = score >= 75 ? 'match-ring-high' : score >= 50 ? 'match-ring-mid' : 'match-ring-low';
@@ -372,7 +358,11 @@
     if (!user) return;
 
     try {
-      const data = await apiRequest('candidate_dashboard.php');
+      const [data, appsData] = await Promise.all([
+        apiRequest('candidate_dashboard.php'),
+        apiRequest('get_applications.php'),
+      ]);
+
       document.getElementById('welcomeTitle').textContent = `Welcome back, ${data.user.name}!`;
       const values = document.querySelectorAll('.stat-value');
       values[0].textContent = data.stats.applications;
@@ -387,12 +377,31 @@
       document.getElementById('candidateSkillsList').innerHTML = data.skills.length
         ? data.skills.map(skill => `<span class="skill-tag ${escapeHtml(skill.category)}">${escapeHtml(skill.skill_name)}</span>`).join('')
         : '<span style="color:var(--text-muted);font-size:.875rem;">No skills yet. Upload your CV to build your profile.</span>';
+
+      const recent = appsData.applications.slice(0, 3);
+      document.getElementById('recentApplicationsList').innerHTML = recent.length
+        ? recent.map(recentAppRow).join('')
+        : '<div class="px-4 py-3" style="color:var(--text-muted);font-size:.875rem;">No applications yet.</div>';
     } catch (error) {
       showToast(error.message, 'warning');
     }
   }
 
-  document.addEventListener('DOMContentLoaded', loadCandidateDashboard);
+  async function loadNotifications() {
+    try {
+      const data = await apiRequest('get_notifications.php');
+      if (data.notifications && data.notifications.length > 0) {
+        data.notifications.forEach(n => showToast(n.message, 'info'));
+      }
+    } catch (_) {
+      // notifications are non-critical — fail silently
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCandidateDashboard();
+    loadNotifications();
+  });
 </script>
 </body>
 </html>

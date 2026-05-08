@@ -29,21 +29,18 @@
       <a href="#" class="sidebar-link" onclick="openPostJob();return false;">
         <i class="bi bi-plus-circle"></i> Post a Job
       </a>
-      <a href="jobs.html" class="sidebar-link">
+      <a href="my_jobs.html" class="sidebar-link">
         <i class="bi bi-briefcase"></i> My Jobs
       </a>
-      <a href="applications.html" class="sidebar-link">
+      <a href="employer_candidates.html" class="sidebar-link">
         <i class="bi bi-people"></i> Candidates
       </a>
     </nav>
 
     <div class="sidebar-section-label">Account</div>
     <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link">
+      <a href="profile.html" class="sidebar-link">
         <i class="bi bi-building"></i> Company Profile
-      </a>
-      <a href="#" class="sidebar-link">
-        <i class="bi bi-gear"></i> Settings
       </a>
       <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);">
         <i class="bi bi-box-arrow-left"></i> Log Out
@@ -148,85 +145,8 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <div style="width:34px;height:34px;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">JS</div>
-                        <div>
-                          <div style="font-weight:600;font-size:.875rem;">Jane Smith</div>
-                          <div style="font-size:.72rem;color:var(--text-muted);">jane@example.com</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td style="font-size:.85rem;">Full Stack Dev</td>
-                    <td>
-                      <span style="font-weight:700;color:var(--success);font-size:.875rem;">88%</span>
-                    </td>
-                    <td><span class="badge-modern badge-shortlisted">Shortlisted</span></td>
-                    <td>
-                      <button type="button" class="btn-soft-primary btn" onclick="candidateAction(this,'Schedule')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
-                        Schedule
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">BJ</div>
-                        <div>
-                          <div style="font-weight:600;font-size:.875rem;">Bob Johnson</div>
-                          <div style="font-size:.72rem;color:var(--text-muted);">bob@example.com</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td style="font-size:.85rem;">Full Stack Dev</td>
-                    <td><span style="font-weight:700;color:var(--success);font-size:.875rem;">81%</span></td>
-                    <td><span class="badge-modern badge-interview">Interview</span></td>
-                    <td>
-                      <button type="button" class="btn-soft-primary btn" onclick="candidateAction(this,'View')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">CD</div>
-                        <div>
-                          <div style="font-weight:600;font-size:.875rem;">Carol Davis</div>
-                          <div style="font-size:.72rem;color:var(--text-muted);">carol@example.com</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td style="font-size:.85rem;">Data Analyst</td>
-                    <td><span style="font-weight:700;color:var(--warning);font-size:.875rem;">67%</span></td>
-                    <td><span class="badge-modern badge-pending">Pending</span></td>
-                    <td>
-                      <button type="button" class="btn-soft-primary btn" onclick="candidateAction(this,'Review')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
-                        Review
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">DW</div>
-                        <div>
-                          <div style="font-weight:600;font-size:.875rem;">Diana Wilson</div>
-                          <div style="font-size:.72rem;color:var(--text-muted);">diana@example.com</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td style="font-size:.85rem;">Backend Engineer</td>
-                    <td><span style="font-weight:700;color:var(--warning);font-size:.875rem;">59%</span></td>
-                    <td><span class="badge-modern badge-pending">Pending</span></td>
-                    <td>
-                      <button type="button" class="btn-soft-danger btn" onclick="candidateAction(this,'Reject')" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);">
-                        Reject
-                      </button>
-                    </td>
-                  </tr>
+                <tbody id="candidatesTableBody">
+                  <tr><td colspan="5" class="text-center py-4" style="color:var(--text-muted);">Loading…</td></tr>
                 </tbody>
               </table>
             </div>
@@ -245,49 +165,8 @@
               </button>
             </div>
             <div class="section-divider" style="margin:0;"></div>
-            <div style="padding:.5rem 0;">
-
-              <div class="px-4 py-3" style="border-bottom:1px solid var(--border);">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                  <span class="fw-600" style="font-size:.875rem;">Full Stack Developer</span>
-                  <span class="badge-modern badge-open">Open</span>
-                </div>
-                <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">Remote · 18 applicants</div>
-                <div class="progress-modern">
-                  <div class="bar" style="width:72%;background:linear-gradient(90deg,var(--primary),var(--accent));"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-1">
-                  <span style="font-size:.7rem;color:var(--text-muted);">18 / 25 limit</span>
-                  <span style="font-size:.7rem;color:var(--primary);font-weight:600;">72% filled</span>
-                </div>
-              </div>
-
-              <div class="px-4 py-3" style="border-bottom:1px solid var(--border);">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                  <span class="fw-600" style="font-size:.875rem;">Data Analyst</span>
-                  <span class="badge-modern badge-open">Open</span>
-                </div>
-                <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">Hybrid · 9 applicants</div>
-                <div class="progress-modern">
-                  <div class="bar" style="width:36%;"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-1">
-                  <span style="font-size:.7rem;color:var(--text-muted);">9 / 25 limit</span>
-                  <span style="font-size:.7rem;color:var(--primary);font-weight:600;">36% filled</span>
-                </div>
-              </div>
-
-              <div class="px-4 py-3">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                  <span class="fw-600" style="font-size:.875rem;">Backend Engineer</span>
-                  <span class="badge-modern badge-closed">Closed</span>
-                </div>
-                <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">On-site · 11 applicants</div>
-                <div class="progress-modern">
-                  <div class="bar" style="width:100%;background:var(--border-strong);"></div>
-                </div>
-              </div>
-
+            <div style="padding:.5rem 0;" id="activeJobsList">
+              <div class="px-4 py-3" style="color:var(--text-muted);font-size:.875rem;">Loading…</div>
             </div>
           </div>
 
@@ -342,6 +221,10 @@
           <label class="form-label-custom">Job Description</label>
           <textarea class="form-control-custom" rows="3" placeholder="Describe the role and responsibilities..."></textarea>
         </div>
+        <div class="form-group">
+          <label class="form-label-custom">Max Applications <span style="color:var(--text-muted);font-weight:400;">(leave blank for 50)</span></label>
+          <input type="number" class="form-control-custom" id="appLimitInput" placeholder="50" min="1">
+        </div>
         <div class="form-group mb-0">
           <label class="form-label-custom">Required Skills <span style="color:var(--text-muted);font-weight:400;">(comma-separated)</span></label>
           <input type="text" class="form-control-custom" id="skillInput" placeholder="Python, React, MySQL, Docker…">
@@ -352,6 +235,53 @@
         <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal" style="font-weight:600;">Cancel</button>
         <button type="button" class="btn btn-primary-grad" onclick="postJobDemo(this)">
           <i class="bi bi-send me-2"></i>Post Job
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Candidate Modal -->
+<div class="modal fade" id="manageCandidateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+    <div class="modal-content" style="border-radius:var(--radius-xl);border:none;box-shadow:var(--shadow-xl);">
+      <div class="modal-header" style="border-bottom:1px solid var(--border);padding:1.5rem;">
+        <div>
+          <h5 class="fw-700 mb-0" id="manageCandidateName" style="letter-spacing:-.01em;">Candidate</h5>
+          <div style="font-size:.78rem;color:var(--text-muted);margin-top:.2rem;" id="manageCandidateMeta"></div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:1.5rem;">
+        <div class="form-group">
+          <label class="form-label-custom">Application Status</label>
+          <select class="form-control-custom" id="manageStatusSelect" onchange="toggleInterviewSection()">
+            <option value="pending">Pending</option>
+            <option value="shortlisted">Shortlisted</option>
+            <option value="interview_scheduled">Schedule Interview</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div id="interviewSection" style="display:none;">
+          <div class="section-divider" style="margin:.5rem 0 1rem;"></div>
+          <div style="font-size:.8rem;font-weight:600;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.75rem;">Interview Details</div>
+          <div class="form-group">
+            <label class="form-label-custom">Date &amp; Time</label>
+            <input type="datetime-local" class="form-control-custom" id="interviewDateInput">
+          </div>
+          <div class="form-group mb-0">
+            <label class="form-label-custom">Mode</label>
+            <select class="form-control-custom" id="interviewModeSelect">
+              <option value="online">Online</option>
+              <option value="in_person">In Person</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border);padding:1.25rem 1.5rem;">
+        <button class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal" style="font-weight:600;">Cancel</button>
+        <button type="button" class="btn btn-primary-grad" id="manageSaveBtn" onclick="saveCandidateAction(this)">
+          <i class="bi bi-check-lg me-2"></i>Save
         </button>
       </div>
     </div>
@@ -374,10 +304,148 @@
     new bootstrap.Modal(document.getElementById('postJobModal')).show();
   }
 
-  function candidateAction(btn, action) {
-    const row = btn.closest('tr');
-    const name = row.querySelector('td div div div')?.textContent?.trim() || 'candidate';
-    showToast(`${action} action opened for ${name} in the frontend demo.`, 'info');
+  function candidateTableRow(c) {
+    const score = Math.round(c.match_score ?? 0);
+    const scoreColor = score >= 75 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--danger)';
+    return `
+      <tr>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.72rem;flex-shrink:0;">${initials(c.full_name)}</div>
+            <div>
+              <div style="font-weight:600;font-size:.875rem;">${escapeHtml(c.full_name)}</div>
+              <div style="font-size:.72rem;color:var(--text-muted);">${escapeHtml(c.email)}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size:.85rem;">${escapeHtml(c.job_title)}</td>
+        <td><span style="font-weight:700;color:${scoreColor};font-size:.875rem;">${score}%</span></td>
+        <td><span class="badge-modern ${statusClass(c.status)}">${statusLabel(c.status)}</span></td>
+        <td>
+          <button type="button" class="btn-soft-primary btn" style="font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius-pill);"
+            data-appid="${c.application_id}"
+            data-name="${escapeHtml(c.full_name)}"
+            data-email="${escapeHtml(c.email)}"
+            data-job="${escapeHtml(c.job_title)}"
+            data-status="${escapeHtml(c.status)}"
+            data-ivid="${c.interview_id ?? ''}"
+            data-ivdate="${escapeHtml(c.interview_date ?? '')}"
+            data-ivmode="${escapeHtml(c.interview_mode ?? 'online')}"
+            onclick="openCandidateModal(this)">
+            Manage
+          </button>
+        </td>
+      </tr>`;
+  }
+
+  function activeJobRow(job) {
+    const pct = job.application_limit > 0
+      ? Math.round((job.total_applicants / job.application_limit) * 100)
+      : 0;
+    const isOpen = job.status === 'open';
+    return `
+      <div class="px-4 py-3" style="border-bottom:1px solid var(--border);">
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <span class="fw-600" style="font-size:.875rem;">${escapeHtml(job.job_title)}</span>
+          <span class="badge-modern ${isOpen ? 'badge-open' : 'badge-closed'}">${isOpen ? 'Open' : 'Closed'}</span>
+        </div>
+        <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.6rem;">${escapeHtml(job.location || 'No location')} · ${job.total_applicants} applicant${job.total_applicants !== 1 ? 's' : ''}</div>
+        ${isOpen ? `
+        <div class="progress-modern">
+          <div class="bar" style="width:${Math.min(pct, 100)}%;background:linear-gradient(90deg,var(--primary),var(--accent));"></div>
+        </div>
+        <div class="d-flex justify-content-between mt-1">
+          <span style="font-size:.7rem;color:var(--text-muted);">${job.total_applicants} / ${job.application_limit} limit</span>
+          <span style="font-size:.7rem;color:var(--primary);font-weight:600;">${pct}% filled</span>
+        </div>` : ''}
+      </div>`;
+  }
+
+  let _currentCandidate = {};
+
+  function openCandidateModal(btn) {
+    const applicationId = parseInt(btn.dataset.appid, 10);
+    const fullName      = btn.dataset.name;
+    const email         = btn.dataset.email;
+    const jobTitle      = btn.dataset.job;
+    const status        = btn.dataset.status;
+    const interviewId   = btn.dataset.ivid ? parseInt(btn.dataset.ivid, 10) : null;
+    const interviewDate = btn.dataset.ivdate;
+    const interviewMode = btn.dataset.ivmode || 'online';
+
+    _currentCandidate = { applicationId, interviewId };
+
+    document.getElementById('manageCandidateName').textContent = fullName;
+    document.getElementById('manageCandidateMeta').textContent = `${email} · ${jobTitle}`;
+
+    const sel = document.getElementById('manageStatusSelect');
+    sel.value = status || 'pending';
+
+    const dateInput = document.getElementById('interviewDateInput');
+    dateInput.value = interviewDate ? interviewDate.replace(' ', 'T').slice(0, 16) : '';
+    document.getElementById('interviewModeSelect').value = interviewMode;
+
+    const saveBtn = document.getElementById('manageSaveBtn');
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = interviewId
+      ? '<i class="bi bi-check-lg me-2"></i>Update'
+      : '<i class="bi bi-check-lg me-2"></i>Save';
+
+    toggleInterviewSection();
+    new bootstrap.Modal(document.getElementById('manageCandidateModal')).show();
+  }
+
+  function toggleInterviewSection() {
+    const status = document.getElementById('manageStatusSelect').value;
+    document.getElementById('interviewSection').style.display =
+      status === 'interview_scheduled' ? '' : 'none';
+  }
+
+  async function saveCandidateAction(btn) {
+    const status = document.getElementById('manageStatusSelect').value;
+    const { applicationId, interviewId } = _currentCandidate;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving…';
+
+    try {
+      if (status === 'interview_scheduled') {
+        const interviewDate = document.getElementById('interviewDateInput').value;
+        if (!interviewDate) {
+          showToast('Please select an interview date and time.', 'warning');
+          btn.disabled = false;
+          btn.innerHTML = interviewId
+            ? '<i class="bi bi-check-lg me-2"></i>Update'
+            : '<i class="bi bi-check-lg me-2"></i>Save';
+          return;
+        }
+        await apiRequest('schedule_interview.php', {
+          method: 'POST',
+          body: JSON.stringify({
+            application_id: applicationId,
+            interview_id: interviewId || undefined,
+            interview_date: interviewDate.replace('T', ' ') + ':00',
+            interview_mode: document.getElementById('interviewModeSelect').value,
+          }),
+        });
+        showToast('Interview scheduled. Candidate has been notified.', 'success');
+      } else {
+        await apiRequest('update_application_status.php', {
+          method: 'POST',
+          body: JSON.stringify({ application_id: applicationId, status }),
+        });
+        showToast('Status updated. Candidate has been notified.', 'success');
+      }
+
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('manageCandidateModal')).hide();
+      loadEmployerDashboard();
+    } catch (err) {
+      showToast(err.message, 'warning');
+      btn.disabled = false;
+      btn.innerHTML = interviewId
+        ? '<i class="bi bi-check-lg me-2"></i>Update'
+        : '<i class="bi bi-check-lg me-2"></i>Save';
+    }
   }
 
   function postJobDemo(btn) {
@@ -393,6 +461,7 @@
         location: fields[1].value.trim(),
         salary_range: fields[2].value.trim(),
         job_description: fields[3].value.trim(),
+        application_limit: parseInt(document.getElementById('appLimitInput').value, 10) || 50,
         skills: document.getElementById('skillInput').value.trim(),
       }),
     }).then(() => {
@@ -419,6 +488,14 @@
       values[1].textContent = data.stats.applicants;
       values[2].textContent = data.stats.shortlisted;
       values[3].textContent = data.stats.interviews;
+
+      document.getElementById('candidatesTableBody').innerHTML = data.candidates.length
+        ? data.candidates.map(candidateTableRow).join('')
+        : '<tr><td colspan="5" class="text-center py-4" style="color:var(--text-muted);">No candidates yet.</td></tr>';
+
+      document.getElementById('activeJobsList').innerHTML = data.jobs.length
+        ? data.jobs.map(activeJobRow).join('')
+        : '<div class="px-4 py-3" style="color:var(--text-muted);font-size:.875rem;">No jobs posted yet.</div>';
     } catch (error) {
       showToast(error.message, 'warning');
     }
@@ -426,7 +503,6 @@
 
   document.addEventListener('DOMContentLoaded', loadEmployerDashboard);
 
-  // Live skill tag preview in modal
   document.getElementById('skillInput').addEventListener('input', function() {
     const preview = document.getElementById('skillTagsPreview');
     const skills = this.value.split(',').map(s => s.trim()).filter(Boolean);

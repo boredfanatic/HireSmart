@@ -115,8 +115,8 @@ def insert_candidate_skills(candidate_id, skill_counts):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python insert_skills.py <candidate_id>")
+    if len(sys.argv) < 2:
+        print("Usage: python insert_skills.py <candidate_id> [parsed_cv.json]")
         sys.exit(1)
 
     try:
@@ -125,8 +125,10 @@ if __name__ == "__main__":
         print("Error: candidate_id must be an integer.")
         sys.exit(1)
 
-    print(f"Loading parsed CV from '{PARSED_CV_PATH}'...")
-    skill_counts = load_parsed_cv(PARSED_CV_PATH)
+    parsed_cv_path = sys.argv[2] if len(sys.argv) > 2 else PARSED_CV_PATH
+
+    print(f"Loading parsed CV from '{parsed_cv_path}'...")
+    skill_counts = load_parsed_cv(parsed_cv_path)
 
     if not skill_counts:
         print("No skills found in parsed CV. Run cv_parser.py first.")

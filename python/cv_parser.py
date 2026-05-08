@@ -1,6 +1,7 @@
 import pdfplumber
 import json
 import re
+import sys
 
 with open("python/skills_dictionary.json", "r") as f:
     skills_data = json.load(f)
@@ -30,23 +31,21 @@ def extract_skills(text, skills_list):
 
     return skill_counts
 
-def parse_cv(file_path):
+def parse_cv(file_path, out_path="data/parsed_cv.json"):
     text = extract_text_from_pdf(file_path)
 
     counts_lower = extract_skills(text, all_skills_lower)
-    # map back to original casing and store counts
     skill_counts = {skill_map[s]: count for s, count in counts_lower.items()}
 
-    result = {
-        "skills": skill_counts
-    }
+    result = {"skills": skill_counts}
 
-    with open("data/parsed_cv.json", "w") as f:
+    with open(out_path, "w") as f:
         json.dump(result, f, indent=4)
 
     print("Parsing complete. Skills extracted:")
     print(list(skill_counts.keys()))
 
 if __name__ == "__main__":
-    file_path = "data/uploads/resume.pdf"  
-    parse_cv(file_path)
+    file_path = sys.argv[1] if len(sys.argv) > 1 else "data/uploads/resume.pdf"
+    out_path  = sys.argv[2] if len(sys.argv) > 2 else "data/parsed_cv.json"
+    parse_cv(file_path, out_path)

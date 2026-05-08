@@ -29,7 +29,7 @@
     </nav>
     <div class="sidebar-section-label">Account</div>
     <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
+      <a href="profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> My Profile</a>
       <a href="login.html" class="sidebar-link" style="color:rgba(239,68,68,.7);"><i class="bi bi-box-arrow-left"></i> Log Out</a>
     </nav>
     <div class="sidebar-footer">
@@ -275,62 +275,83 @@
     document.getElementById('fileInput').value = '';
   }
 
-  function startParsing() {
+  async function startParsing() {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) return;
+
     document.getElementById('uploadSection').style.display = 'none';
     document.getElementById('parsingSection').style.display = '';
     activateStep(2);
 
-    // Simulate parsing progress
     const steps = [
-      [15, 'Reading PDF pages…'],
-      [35, 'Extracting text…'],
-      [60, 'Matching skills dictionary…'],
-      [80, 'Calculating proficiency levels…'],
-      [100, 'Done!'],
+      [20, 'Uploading CV…'],
+      [45, 'Reading PDF pages…'],
+      [70, 'Matching skills dictionary…'],
+      [90, 'Calculating proficiency levels…'],
     ];
     let i = 0;
     const interval = setInterval(() => {
-      if (i >= steps.length) { clearInterval(interval); showResults(); return; }
+      if (i >= steps.length) return;
       document.getElementById('parseProgressBar').style.width = steps[i][0] + '%';
       document.getElementById('parseProgressText').textContent = steps[i][1];
       i++;
-    }, 600);
+    }, 700);
+
+    try {
+      const formData = new FormData();
+      formData.append('cv', file);
+      formData.append('action', 'parse');
+
+      const res  = await fetch('../backend/upload_cv.php', { method: 'POST', credentials: 'same-origin', body: formData });
+      const data = await res.json().catch(() => { throw new Error('Server error — check XAMPP error logs.'); });
+      if (!res.ok || data.success === false) throw new Error(data.error || 'Parsing failed.');
+
+      clearInterval(interval);
+      document.getElementById('parseProgressBar').style.width = '100%';
+      document.getElementById('parseProgressText').textContent = 'Done!';
+      setTimeout(() => showResults(data.skills), 400);
+    } catch (err) {
+      clearInterval(interval);
+      document.getElementById('parsingSection').style.display = 'none';
+      document.getElementById('uploadSection').style.display = '';
+      activateStep(1);
+      showToast(err.message, 'error');
+    }
   }
 
-  function showResults() {
+  function showResults(skills) {
     document.getElementById('parsingSection').style.display = 'none';
     document.getElementById('resultsSection').style.display = '';
     activateStep(3);
 
-    // Demo extracted skills
-    const extracted = [
-      { name: 'Python',           category: 'programming', proficiency: 9, count: 4 },
-      { name: 'Machine Learning', category: 'data',        proficiency: 9, count: 3 },
-      { name: 'SQL',              category: 'database',    proficiency: 7, count: 2 },
-      { name: 'AWS',              category: 'cloud',       proficiency: 7, count: 1 },
-      { name: 'Git',              category: 'tools',       proficiency: 7, count: 1 },
-      { name: 'Debugging',        category: 'tools',       proficiency: 7, count: 2 },
-      { name: 'React',            category: 'framework',   proficiency: 7, count: 1 },
-    ];
+    // skills = { "Python": 4, "SQL": 2, … } from cv_parser.py
+    const extracted = Object.entries(skills || {}).map(([name, count]) => ({
+      name, count, proficiency: count >= 3 ? 9 : 7,
+    }));
 
-    document.getElementById('skillsFoundCount').textContent = `${extracted.length} skills found in your CV`;
+    document.getElementById('skillsFoundCount').textContent =
+      `${extracted.length} skill${extracted.length !== 1 ? 's' : ''} found in your CV`;
 
     const container = document.getElementById('extractedSkillsContainer');
+    if (!extracted.length) {
+      container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:1rem 0;">No skills found. Use a text-based PDF with explicit skill names.</p>';
+      return;
+    }
+
     container.innerHTML = extracted.map(skill => `
       <div style="display:flex;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border);">
-        <span class="skill-tag ${skill.category}" style="min-width:140px;">${skill.name}</span>
+        <span class="skill-tag" style="min-width:140px;">${escapeHtml(skill.name)}</span>
         <div style="flex:1;">
           <div class="progress-modern">
             <div class="bar" style="width:${skill.proficiency * 10}%;"></div>
           </div>
         </div>
         <span style="font-size:.78rem;font-weight:700;color:${skill.proficiency >= 9 ? 'var(--success)' : 'var(--primary)'};min-width:40px;text-align:right;">${skill.proficiency}/10</span>
-        <span style="font-size:.72rem;color:var(--text-muted);min-width:70px;text-align:right;">×${skill.count} mention${skill.count>1?'s':''}</span>
+        <span style="font-size:.72rem;color:var(--text-muted);min-width:70px;text-align:right;">×${skill.count} mention${skill.count > 1 ? 's' : ''}</span>
       </div>
     `).join('');
-    // Remove last border
     const rows = container.querySelectorAll('div');
-    if (rows.length) rows[rows.length-1].style.borderBottom = 'none';
+    if (rows.length) rows[rows.length - 1].style.borderBottom = 'none';
   }
 
   function activateStep(stepNum) {
@@ -357,16 +378,25 @@
     activateStep(1);
   }
 
-  function saveToProfile(btn) {
+  async function saveToProfile(btn) {
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving…';
-    // Will call upload_cv.php → cv_parser.py → insert_skills.py
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+      formData.append('action', 'save');
+      const res  = await fetch('../backend/upload_cv.php', { method: 'POST', credentials: 'same-origin', body: formData });
+      const data = await res.json().catch(() => { throw new Error('Server error — check XAMPP error logs.'); });
+      if (!res.ok || data.success === false) throw new Error(data.error || 'Save failed.');
+
       btn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Skills Saved!';
       btn.style.background = 'var(--success)';
       btn.style.boxShadow = '0 4px 15px rgba(16,185,129,.35)';
-      showToast('Skills saved in the frontend demo.', 'success');
-    }, 1200);
+      showToast('Skills saved to your profile!', 'success');
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-cloud-upload me-2"></i>Save Skills to Profile';
+      showToast(err.message, 'error');
+    }
   }
 </script>
 </body>
